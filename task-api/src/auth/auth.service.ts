@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -20,7 +24,7 @@ export class AuthService {
       where: { username },
     });
 
-    if (!user) throw new ForbiddenException('User not found');
+    if (!user) throw new NotFoundException('User not found');
 
     const passwordMatch = await bcrypt.compare(password, user.hash);
 
