@@ -18,9 +18,9 @@ CREATE TABLE "User" (
 CREATE TABLE "Task" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
-    "authorId" INTEGER NOT NULL,
-    "priority" "Priority" NOT NULL,
     "status" "Status" NOT NULL,
+    "priority" "Priority" NOT NULL,
+    "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Task_pkey" PRIMARY KEY ("id")
 );
@@ -30,6 +30,7 @@ CREATE TABLE "Category" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "color" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
 );
@@ -50,7 +51,10 @@ CREATE UNIQUE INDEX "_CategoryToTask_AB_unique" ON "_CategoryToTask"("A", "B");
 CREATE INDEX "_CategoryToTask_B_index" ON "_CategoryToTask"("B");
 
 -- AddForeignKey
-ALTER TABLE "Task" ADD CONSTRAINT "Task_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Task" ADD CONSTRAINT "Task_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Category" ADD CONSTRAINT "Category_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_CategoryToTask" ADD CONSTRAINT "_CategoryToTask_A_fkey" FOREIGN KEY ("A") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;

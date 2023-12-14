@@ -11,28 +11,31 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique
-  name     String
-  hash     String
-  Tasks    Task[]
+  id         Int        @id @default(autoincrement())
+  username   String     @unique
+  name       String
+  hash       String
+  Tasks      Task[]
+  Categories Category[]
 }
 
 model Task {
   id         Int        @id @default(autoincrement())
   title      String
-  author     User       @relation(fields: [authorId], references: [id])
-  authorId   Int
-  priority   Priority
   status     Status
+  priority   Priority
+  user       User       @relation(fields: [userId], references: [id])
+  userId     Int
   categories Category[]
 }
 
 model Category {
-  id    Int    @id @default(autoincrement())
-  name  String
-  color String
-  Tasks Task[]
+  id     Int    @id @default(autoincrement())
+  name   String
+  color  String
+  user   User   @relation(fields: [userId], references: [id])
+  userId Int
+  Tasks  Task[]
 }
 
 enum Priority {
