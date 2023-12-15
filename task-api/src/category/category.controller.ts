@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
 import { CategoryService } from './category.service';
-import { CategoryDto } from './dto/category.dto';
+import { CategoryDto } from './dto';
 
 @UseGuards(JwtGuard)
 @Controller('categories')

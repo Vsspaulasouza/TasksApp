@@ -4,8 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { isDuplicate } from 'src/utils';
-import { CategoryDto } from './dto/category.dto';
+import { CategoryDto } from './dto';
 
 @Injectable()
 export class CategoryService {
@@ -18,7 +17,6 @@ export class CategoryService {
       const category = await this.prisma.category.create({ data });
       return category;
     } catch (error) {
-      if (isDuplicate(error)) throw new ForbiddenException('Duplicate name');
       throw error;
     }
   }
