@@ -28,3 +28,25 @@ export class TaskDto {
   @IsNumber({}, { each: true })
   categoriesIds?: number[];
 }
+export class UpdateTaskDto {
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  title: string;
+
+  @IsOptional()
+  @IsIn(Object.keys(Status))
+  @IsNotEmpty()
+  status: Status;
+
+  @IsOptional()
+  @IsIn(Object.keys(Priority))
+  @IsNotEmpty()
+  priority: Priority;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsNumber({}, { each: true })
+  categoriesIds?: number[];
+}

@@ -4,7 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { TaskDto } from './dto';
+import { notFound } from 'src/utils';
+import { TaskDto, UpdateTaskDto } from './dto';
 
 @Injectable()
 export class TaskService {
@@ -49,11 +50,45 @@ export class TaskService {
     const numberTaskId = Number(taskId);
     const task = await this.prisma.task.findUnique({
       where: { id: numberTaskId },
+      include: { categories: true },
     });
 
     if (!task) throw new NotFoundException('Task not found');
     if (task.userId !== userId)
       throw new ForbiddenException('This task belongs to another user');
     return task;
+  }
+
+  async updateTask(userId: number, taskId: string, dto: UpdateTaskDto) {
+    const { priority, status, title, categoriesIds } = dto;
+    const data = { priority, status, title, userId };
+    const numberTaskId = Number(taskId);
+    const disconnectData = {};
+
+    if (categoriesIds) {
+      const categories = await this.findCategories(userId, categoriesIds);
+      Object.assign(disconnectData, { categories: { set: [] } });
+      Object.assign(data, {
+        categories: { connect: categories },
+      });
+    }
+
+    try {
+      await this.prisma.task.update({
+        data: disconnectData,
+        where: { id: numberTaskId, userId },
+        include: { categories: true },
+      });
+
+      const task = await this.prisma.task.update({
+        data,
+        where: { id: numberTaskId, userId },
+        include: { categories: true },
+      });
+      return task;
+    } catch (error) {
+      if (notFound(error)) throw new NotFoundException('Task not found');
+      throw error;
+    }
   }
 }
