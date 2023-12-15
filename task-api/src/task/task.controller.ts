@@ -25,5 +25,5 @@ export class TaskController {
   }
 }
 
-// TODO: Atualizar usuário, categorias e tasks
+// TODO: Atualizar categorias e tasks
 // TODO: Deletar usuário, categorias e tasks

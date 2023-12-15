@@ -1,4 +1,4 @@
-import { IsHexColor, IsNotEmpty, IsString } from 'class-validator';
+import { IsHexColor, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CategoryDto {
   @IsString()
@@ -8,4 +8,15 @@ export class CategoryDto {
   @IsHexColor()
   @IsNotEmpty()
   color: string;
+}
+export class UpdateCategoryDto {
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  name?: string;
+
+  @IsOptional()
+  @IsHexColor()
+  @IsNotEmpty()
+  color?: string;
 }

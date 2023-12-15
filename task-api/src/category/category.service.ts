@@ -4,7 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CategoryDto } from './dto';
+import { notFound } from 'src/utils';
+import { CategoryDto, UpdateCategoryDto } from './dto';
 
 @Injectable()
 export class CategoryService {
@@ -40,5 +41,24 @@ export class CategoryService {
     if (category.userId !== userId)
       throw new ForbiddenException('This category belongs to another user');
     return category;
+  }
+
+  async updateCategory(
+    userId: number,
+    categoryId: string,
+    data: UpdateCategoryDto,
+  ) {
+    const numberCategoryId = Number(categoryId);
+
+    try {
+      const category = await this.prisma.category.update({
+        data,
+        where: { id: numberCategoryId, userId },
+      });
+      return category;
+    } catch (error) {
+      if (notFound(error)) throw new NotFoundException('Category not found');
+      throw error;
+    }
   }
 }

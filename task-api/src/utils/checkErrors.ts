@@ -5,3 +5,9 @@ export function isDuplicate(error: unknown) {
     error instanceof PrismaClientKnownRequestError && error.code === 'P2002'
   );
 }
+
+export function notFound(error: unknown) {
+  return (
+    error instanceof PrismaClientKnownRequestError && error.code === 'P2025'
+  );
+}
