@@ -5,10 +5,11 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { isDuplicate } from 'src/utils';
-import { AuthDtoLogin, AuthDtoSignUp } from './dto';
+import { AuthDtoLogin, AuthDtoSignUp, AuthDtoUpdate } from './dto';
 
 @Injectable()
 export class AuthService {
@@ -58,5 +59,29 @@ export class AuthService {
     });
 
     return { access_token: token };
+  }
+
+  async updateCredentials(userId: number, dto: AuthDtoUpdate) {
+    const { username, password } = dto;
+    const data: Partial<Pick<User, 'username' | 'hash'>> = { username };
+
+    if (password) {
+      const salt = await bcrypt.genSalt();
+      data.hash = await bcrypt.hash(password, salt);
+    }
+
+    try {
+      const result = await this.prisma.user.update({
+        data,
+        where: { id: userId },
+      });
+
+      delete result.hash;
+      return result;
+    } catch (error) {
+      if (isDuplicate(error))
+        throw new ForbiddenException('Duplicate username');
+      throw error;
+    }
   }
 }
