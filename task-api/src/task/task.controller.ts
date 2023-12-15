@@ -24,3 +24,6 @@ export class TaskController {
     return this.taskService.getTask(taskId, userId);
   }
 }
+
+// TODO: Atualizar usuário, categorias e tasks
+// TODO: Deletar usuário, categorias e tasks
