@@ -39,9 +39,8 @@ export class TaskService {
 
   async getAllTasks(userId: number) {
     const tasks = await this.prisma.task.findMany({
-      where: {
-        userId,
-      },
+      where: { userId },
+      include: { categories: true },
     });
     return tasks;
   }
