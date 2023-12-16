@@ -47,6 +47,33 @@ Instale todas as dependências do projeto
 npm i
 ```
 
+Configure o arquivo `docker-compose.yml` de acordo com as suas preferências
+
+```yml
+# docker-compose.yml example
+services:
+  dev-db:
+    image: postgres:13
+    ports:
+      - YOUR_PORT
+    environment:
+      - POSTGRES_USER= YOUR_USERNAME
+      - POSTGRES_PASSWORD= YOUR_PASSWORD
+      - POSTGRES_DB= YOUR_DB_NAME
+    networks:
+      - myNetwork
+networks:
+  myNetwork:
+```
+
+Crie um arquivo `.env`, ele deve ter todas as variáveis presentes no arquivo `.env.example`. Certifique-se de que a DATABASE_URL esteja de acordo com o que está definido no `docker-compose.yml`
+
+```dosini
+# .env.example, committed to repo
+DATABASE_URL="postgresql://username:password@localhost:port/database_name"
+JWT_SECRET="SecretKey"
+```
+
 Agora, é necessário subir o banco de dados e realizar as migrações
 
 ```shell
