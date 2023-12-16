@@ -61,4 +61,18 @@ export class CategoryService {
       throw error;
     }
   }
+
+  async deleteCategory(userId: number, categoryId: string) {
+    const numberCategoryId = Number(categoryId);
+
+    try {
+      await this.prisma.category.delete({
+        where: { id: numberCategoryId, userId },
+      });
+      return 'Category deleted';
+    } catch (error) {
+      if (notFound(error)) throw new NotFoundException('Category not found');
+      throw error;
+    }
+  }
 }
