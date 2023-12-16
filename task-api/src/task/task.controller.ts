@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -40,6 +41,9 @@ export class TaskController {
   ) {
     return this.taskService.updateTask(userId, taskId, dto);
   }
-}
 
-// TODO: Deletar usuário, categorias e tasks
+  @Delete(':id')
+  deleteTask(@GetUser('id') userId: number, @Param('id') taskId: string) {
+    return this.taskService.deleteTask(userId, taskId);
+  }
+}

@@ -90,4 +90,18 @@ export class TaskService {
       throw error;
     }
   }
+
+  async deleteTask(userId: number, taskId: string) {
+    const numberTaskId = Number(taskId);
+
+    try {
+      await this.prisma.task.delete({
+        where: { id: numberTaskId, userId },
+      });
+      return 'Task deleted';
+    } catch (error) {
+      if (notFound(error)) throw new NotFoundException('Task not found');
+      throw error;
+    }
+  }
 }
