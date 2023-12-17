@@ -1,6 +1,8 @@
 import { Container, Heading, Image, Link, Stack, Text } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import { SignupForm } from "../components";
+import { CustomForm } from "../components";
+import { type User } from "../types";
+import { signupValidation } from "../validations";
 
 export function Signup() {
   return (
@@ -25,7 +27,18 @@ export function Signup() {
           </Stack>
         </Stack>
 
-        <SignupForm />
+        <CustomForm
+          initialValues={{
+            name: "",
+            username: "",
+            password: "",
+          }}
+          validationSchema={signupValidation}
+          onSubmit={(values: User) => {
+            console.log(values);
+          }}
+          textButton="Sign up"
+        />
       </Stack>
     </Container>
   );

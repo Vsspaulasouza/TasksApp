@@ -5,3 +5,8 @@ export const signupValidation = object().shape({
   username: string().required("Required").min(1, "Not empty"),
   password: string().required("Required").min(1, "Not empty"),
 });
+
+export const loginValidation = object().shape({
+  username: string().required("Required").min(1, "Not empty"),
+  password: string().required("Required").min(1, "Not empty"),
+});
