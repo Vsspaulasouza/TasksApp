@@ -1,19 +1,8 @@
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  FormLabel,
-  Heading,
-  Image,
-  Input,
-  Link,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Container, Heading, Image, Link, Stack, Text } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
+import { SignupForm } from "../components";
 
-function Signup() {
+export function Signup() {
   return (
     <Container
       maxW="lg"
@@ -36,44 +25,8 @@ function Signup() {
           </Stack>
         </Stack>
 
-        <Box
-          py={{ base: "0", sm: "8" }}
-          px={{ base: "4", sm: "10" }}
-          bg={{ base: "transparent", sm: "gray.700" }}
-          boxShadow={{ base: "none", sm: "md" }}
-          borderRadius={{ base: "none", sm: "xl" }}
-        >
-          <Stack spacing="6">
-            <form>
-              <Stack spacing="5">
-                <FormControl>
-                  <FormLabel htmlFor="name" fontWeight="bold">
-                    Name
-                  </FormLabel>
-                  <Input id="name" type="text" />
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor="username" fontWeight="bold">
-                    Username
-                  </FormLabel>
-                  <Input id="username" type="text" />
-                </FormControl>
-                <FormControl>
-                  <FormLabel htmlFor="password" fontWeight="bold">
-                    Password
-                  </FormLabel>
-                  <Input id="password" type="password" />
-                </FormControl>
-              </Stack>
-            </form>
-            <Button bgColor="blue.600" _hover={{ bgColor: "blue.500" }}>
-              Sign up
-            </Button>
-          </Stack>
-        </Box>
+        <SignupForm />
       </Stack>
     </Container>
   );
 }
-
-export default Signup;
