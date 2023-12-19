@@ -1,10 +1,39 @@
-import { Container, Heading, Image, Link, Stack, Text } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import {
+  Container,
+  Heading,
+  Image,
+  Link,
+  Stack,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { customRequestToken } from "../api";
 import { CustomForm } from "../components";
-import { type User } from "../types";
+import { isCustomError, type LoginType } from "../types";
+import { showToast } from "../utils";
 import { loginValidation } from "../validations";
 
 export function Login() {
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const initialValues: LoginType = {
+    username: "",
+    password: "",
+  };
+
+  const onSubmit = async (values: LoginType) => {
+    const response = await customRequestToken("/auth/login", values);
+
+    if (response != null && isCustomError(response.data)) {
+      const { message } = response.data;
+      showToast(toast, message, "error");
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <Container
       maxW="lg"
@@ -28,14 +57,9 @@ export function Login() {
         </Stack>
 
         <CustomForm
-          initialValues={{
-            username: "",
-            password: "",
-          }}
+          initialValues={initialValues}
           validationSchema={loginValidation}
-          onSubmit={(values: User) => {
-            console.log(values);
-          }}
+          onSubmit={onSubmit}
           textButton="Login"
         />
       </Stack>

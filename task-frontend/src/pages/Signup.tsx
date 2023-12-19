@@ -1,10 +1,40 @@
-import { Container, Heading, Image, Link, Stack, Text } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import {
+  Container,
+  Heading,
+  Image,
+  Link,
+  Stack,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { customRequestToken } from "../api";
 import { CustomForm } from "../components";
-import { type User } from "../types";
+import { isCustomError, type User } from "../types";
+import { showToast } from "../utils";
 import { signupValidation } from "../validations";
 
 export function Signup() {
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const initialValues: User = {
+    name: "",
+    username: "",
+    password: "",
+  };
+
+  const onSubmit = async (values: User) => {
+    const response = await customRequestToken("/auth/signup", values);
+
+    if (response != null && isCustomError(response.data)) {
+      const { message } = response.data;
+      showToast(toast, message, "error");
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <Container
       maxW="lg"
@@ -21,22 +51,16 @@ export function Signup() {
             <Text color="GrayText">
               Already have an account?{" "}
               <Link as={RouterLink} to="../login" color="teal">
-                Login
+                Log in
               </Link>
             </Text>
           </Stack>
         </Stack>
 
         <CustomForm
-          initialValues={{
-            name: "",
-            username: "",
-            password: "",
-          }}
+          initialValues={initialValues}
           validationSchema={signupValidation}
-          onSubmit={(values: User) => {
-            console.log(values);
-          }}
+          onSubmit={onSubmit}
           textButton="Sign up"
         />
       </Stack>
