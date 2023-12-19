@@ -10,7 +10,7 @@ export interface LoginType {
 }
 
 export interface CustomError {
-  error: string;
+  error?: string;
   message: string;
   statusCode: number;
 }

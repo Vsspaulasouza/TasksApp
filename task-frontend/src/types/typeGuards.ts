@@ -35,8 +35,6 @@ export function isCustomError(value: unknown): value is CustomError {
     value !== undefined &&
     value !== null &&
     typeof value === "object" &&
-    "error" in value &&
-    typeof value.error === "string" &&
     "message" in value &&
     typeof value.message === "string" &&
     "statusCode" in value &&
