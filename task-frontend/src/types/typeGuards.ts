@@ -1,7 +1,7 @@
 import { type CustomError, type LoginType, type User } from ".";
 
 export function isUser(value: unknown): value is User {
-  if (
+  return (
     value !== undefined &&
     value !== null &&
     typeof value === "object" &&
@@ -11,13 +11,11 @@ export function isUser(value: unknown): value is User {
     typeof value.username === "string" &&
     "password" in value &&
     typeof value.password === "string"
-  )
-    return true;
-  return false;
+  );
 }
 
 export function isLoginType(value: unknown): value is LoginType {
-  if (
+  return (
     value !== undefined &&
     value !== null &&
     typeof value === "object" &&
@@ -25,13 +23,11 @@ export function isLoginType(value: unknown): value is LoginType {
     typeof value.username === "string" &&
     "password" in value &&
     typeof value.password === "string"
-  )
-    return true;
-  return false;
+  );
 }
 
 export function isCustomError(value: unknown): value is CustomError {
-  if (
+  return (
     value !== undefined &&
     value !== null &&
     typeof value === "object" &&
@@ -39,7 +35,5 @@ export function isCustomError(value: unknown): value is CustomError {
     typeof value.message === "string" &&
     "statusCode" in value &&
     typeof value.statusCode === "number"
-  )
-    return true;
-  return false;
+  );
 }
