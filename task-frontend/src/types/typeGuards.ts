@@ -5,12 +5,12 @@ export function isUser(value: unknown): value is User {
     value !== undefined &&
     value !== null &&
     typeof value === "object" &&
+    "id" in value &&
+    typeof value.id === "number" &&
     "name" in value &&
     typeof value.name === "string" &&
     "username" in value &&
-    typeof value.username === "string" &&
-    "password" in value &&
-    typeof value.password === "string"
+    typeof value.username === "string"
   );
 }
 

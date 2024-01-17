@@ -12,16 +12,17 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { IoSettingsOutline } from "react-icons/io5";
+import { useEffect, useState } from "react";
+import { IoLogOutOutline, IoPerson, IoSettingsOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../api";
-import { isCustomError } from "../types";
-import { showToast } from "../utils";
+import { isCustomError, isUser, type User } from "../types";
+import { removeToken, showToast } from "../utils";
 
 export function Home() {
   const toast = useToast();
   const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const requestUser = async () => {
@@ -31,10 +32,17 @@ export function Home() {
         showToast(toast, "Please log in to your account", "info");
         navigate("/auth/login");
       }
+
+      if (isUser(response)) setUser(response);
     };
 
     void requestUser();
   }, []);
+
+  const logout = () => {
+    removeToken();
+    navigate("/auth/login");
+  };
 
   return (
     <Container
@@ -45,6 +53,7 @@ export function Home() {
       <Flex justifyContent="space-between">
         <Stack spacing="1">
           <Heading size={{ base: "2xl", md: "xl" }}>
+            Hello {user?.name}, welcome to&nbsp;
             <Highlight
               query="Tasks"
               styles={{
@@ -55,7 +64,7 @@ export function Home() {
                 fontStyle: "italic",
               }}
             >
-              Hello, welcome to Tasks
+              Tasks
             </Highlight>
           </Heading>
           <Text fontSize="xl" color="GrayText">
@@ -72,8 +81,10 @@ export function Home() {
             fontSize="20px"
           />
           <MenuList>
-            <MenuItem>Edit user info</MenuItem>
-            <MenuItem>Logout</MenuItem>
+            <MenuItem icon={<IoPerson />}>Edit user info</MenuItem>
+            <MenuItem icon={<IoLogOutOutline />} onClick={logout}>
+              Logout
+            </MenuItem>
           </MenuList>
         </Menu>
       </Flex>
