@@ -1,6 +1,6 @@
-import { type CustomError, type LoginType, type User } from ".";
+import { type CreatedUser, type CustomError, type LoginType } from ".";
 
-export function isUser(value: unknown): value is User {
+export function isCreatedUser(value: unknown): value is CreatedUser {
   return (
     value !== undefined &&
     value !== null &&

@@ -4,6 +4,8 @@ export interface User {
   password: string;
 }
 
+export type CreatedUser = Omit<User, "password"> & { id: number };
+
 export interface LoginType {
   username: string;
   password: string;
