@@ -1,3 +1,3 @@
 export * from "./CustomForm";
 export * from "./CustomFormField";
-export * from "./HeaderHome";
+export * from "./headerHome";
