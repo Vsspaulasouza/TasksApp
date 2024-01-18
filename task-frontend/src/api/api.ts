@@ -1,5 +1,10 @@
 import axios, { AxiosError } from "axios";
-import { type LoginType, type User } from "../types";
+import {
+  type AuthCredentials,
+  type LoginType,
+  type NameUser,
+  type User,
+} from "../types";
 import { getToken } from "../utils";
 
 const instance = axios.create({
@@ -26,6 +31,33 @@ export async function getUser() {
       method: "get",
       headers: { Authorization: `Bearer ${token}` },
       url: "/users/me",
+    });
+
+    return result.data;
+  } catch (error) {
+    if (error instanceof AxiosError) return error.response;
+    throw error;
+  }
+}
+
+export async function updateUser(
+  name: NameUser,
+  authCredentials: AuthCredentials
+) {
+  try {
+    const token = getToken();
+    await instance({
+      method: "patch",
+      headers: { Authorization: `Bearer ${token}` },
+      url: "/users/me",
+      data: name,
+    });
+
+    const result = await instance({
+      method: "patch",
+      headers: { Authorization: `Bearer ${token}` },
+      url: "/auth/me",
+      data: authCredentials,
     });
 
     return result.data;

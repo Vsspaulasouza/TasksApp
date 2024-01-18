@@ -14,6 +14,7 @@ interface FormProps {
       ) => undefined | Promise<any>)
     | ((values: any) => void);
   textButton: string;
+  withoutBox?: boolean;
 }
 
 export function CustomForm({
@@ -21,6 +22,7 @@ export function CustomForm({
   validationSchema,
   onSubmit,
   textButton,
+  withoutBox,
 }: FormProps) {
   const fields = Object.keys(initialValues) as Array<
     keyof typeof initialValues
@@ -31,7 +33,7 @@ export function CustomForm({
       py={{ base: "0", sm: "8" }}
       px={{ base: "4", sm: "10" }}
       bg={{ base: "transparent", sm: "gray.700" }}
-      boxShadow={{ base: "none", sm: "md" }}
+      boxShadow={withoutBox === true ? "none" : { base: "none", sm: "md" }}
       borderRadius={{ base: "none", sm: "xl" }}
     >
       <Formik
