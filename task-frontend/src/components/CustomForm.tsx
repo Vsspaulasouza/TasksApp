@@ -2,15 +2,15 @@ import { Box, Button, Stack } from "@chakra-ui/react";
 import { Formik, type FormikHelpers } from "formik";
 import { type ObjectSchema } from "yup";
 import { CustomFormField } from ".";
-import { type LoginType, type User } from "../types";
+import { type AuthCredentials, type User } from "../types";
 
 interface FormProps {
-  initialValues: User | LoginType;
-  validationSchema: ObjectSchema<User | LoginType>;
+  initialValues: User | AuthCredentials;
+  validationSchema: ObjectSchema<User | AuthCredentials>;
   onSubmit:
     | ((
-        values: User | LoginType,
-        formikHelpers: FormikHelpers<User | LoginType>
+        values: User | AuthCredentials,
+        formikHelpers: FormikHelpers<User | AuthCredentials>
       ) => undefined | Promise<any>)
     | ((values: any) => void);
   textButton: string;

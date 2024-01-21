@@ -1,4 +1,4 @@
-import { type CreatedUser, type CustomError, type LoginType } from ".";
+import { type AuthCredentials, type CreatedUser, type CustomError } from ".";
 
 export function isCreatedUser(value: unknown): value is CreatedUser {
   return (
@@ -14,7 +14,7 @@ export function isCreatedUser(value: unknown): value is CreatedUser {
   );
 }
 
-export function isLoginType(value: unknown): value is LoginType {
+export function isAuthCredentials(value: unknown): value is AuthCredentials {
   return (
     value !== undefined &&
     value !== null &&

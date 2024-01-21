@@ -10,7 +10,7 @@ import {
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { customRequestToken } from "../api";
 import { CustomForm } from "../components";
-import { isCustomError, type LoginType } from "../types";
+import { isCustomError, type AuthCredentials } from "../types";
 import { showToast } from "../utils";
 import { loginValidation } from "../validations";
 
@@ -18,12 +18,12 @@ export function Login() {
   const toast = useToast();
   const navigate = useNavigate();
 
-  const initialValues: LoginType = {
+  const initialValues: AuthCredentials = {
     username: "",
     password: "",
   };
 
-  const onSubmit = async (values: LoginType) => {
+  const onSubmit = async (values: AuthCredentials) => {
     const response = await customRequestToken("/auth/login", values);
 
     if (response != null && isCustomError(response.data)) {
