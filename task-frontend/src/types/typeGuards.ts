@@ -1,4 +1,9 @@
-import { type AuthCredentials, type CreatedUser, type CustomError } from ".";
+import {
+  type AuthCredentials,
+  type CreatedTask,
+  type CreatedUser,
+  type CustomError,
+} from ".";
 
 export function isCreatedUser(value: unknown): value is CreatedUser {
   return (
@@ -35,5 +40,30 @@ export function isCustomError(value: unknown): value is CustomError {
     typeof value.message === "string" &&
     "statusCode" in value &&
     typeof value.statusCode === "number"
+  );
+}
+
+export function isCreatedTask(value: unknown): value is CreatedTask {
+  return (
+    value !== undefined &&
+    value !== null &&
+    typeof value === "object" &&
+    "id" in value &&
+    typeof value.id === "number" &&
+    "title" in value &&
+    typeof value.title === "string" &&
+    "status" in value &&
+    typeof value.status === "string" &&
+    "priority" in value &&
+    typeof value.priority === "string"
+  );
+}
+
+export function isCreatedTaskArray(value: unknown): value is CreatedTask[] {
+  return (
+    value !== undefined &&
+    value !== null &&
+    value instanceof Array &&
+    isCreatedTask(value[0])
   );
 }

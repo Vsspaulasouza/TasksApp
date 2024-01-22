@@ -110,3 +110,19 @@ export async function postTask(data: Task) {
     throw error;
   }
 }
+
+export async function getTasks() {
+  try {
+    const token = getToken();
+    const result = await instance({
+      method: "get",
+      headers: { Authorization: `Bearer ${token}` },
+      url: "/tasks",
+    });
+
+    return result.data;
+  } catch (error) {
+    if (error instanceof AxiosError) return error.response;
+    throw error;
+  }
+}

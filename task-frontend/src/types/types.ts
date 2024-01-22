@@ -25,3 +25,5 @@ export interface Task {
   status: Status;
   priority: Priority;
 }
+
+export type CreatedTask = Task & { id: number };

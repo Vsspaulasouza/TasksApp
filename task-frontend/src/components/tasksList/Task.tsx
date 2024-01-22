@@ -1,8 +1,12 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { type CreatedTask } from "../../types";
 
-export function Task() {
-  const text =
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam consequatur facilis tenetur cum ducimus ipsam consequuntur laborum distinctio totam dolorum sit, sint quisquam harum voluptates cumque? Ipsam placeat excepturi cumque.";
+interface TaskProps {
+  task: CreatedTask;
+}
+
+export function Task({ task }: TaskProps) {
+  const { title, status, priority } = task;
 
   return (
     <Flex
@@ -14,10 +18,10 @@ export function Task() {
       px={{ base: "3", md: "6" }}
       py={{ base: "1", md: "3" }}
     >
-      <Text maxW="80%">{text}</Text>
+      <Text maxW="80%">{title}</Text>
       <Flex maxW="15%" w="150px" justifyContent="space-between">
-        <Text>Status</Text>
-        <Text>Priority</Text>
+        <Text>{status}</Text>
+        <Text>{priority}</Text>
       </Flex>
     </Flex>
   );
