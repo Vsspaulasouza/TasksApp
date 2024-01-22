@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getUser } from "../api";
 import { HeaderHome } from "../components";
 import { OptionsBar } from "../components/optionsBar";
-import { TasksList } from "../components/tasksList";
+import { TaskListBar, TasksList } from "../components/tasksList";
 import { isCreatedUser, isCustomError, type CreatedUser } from "../types";
 import { showToast } from "../utils";
 
@@ -35,8 +35,8 @@ export function Home() {
       px={{ base: "0", sm: "20" }}
     >
       <HeaderHome user={user} />
-
       <OptionsBar />
+      <TaskListBar />
       <TasksList />
     </Container>
   );
