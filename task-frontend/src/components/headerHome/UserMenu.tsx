@@ -2,6 +2,7 @@ import {
   IconButton,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
@@ -33,6 +34,7 @@ export function UserMenu() {
         <EditUserInfo />
         <EditCredentials />
         <DeleteUserItem />
+        <MenuDivider />
         <MenuItem icon={<IoLogOutOutline />} onClick={logout}>
           Logout
         </MenuItem>
@@ -40,5 +42,3 @@ export function UserMenu() {
     </Menu>
   );
 }
-
-// TODO: delete user
