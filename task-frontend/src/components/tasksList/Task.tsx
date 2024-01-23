@@ -1,13 +1,15 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { type CreatedTask } from "../../types";
-import { formatCapitalizeLower } from "../../utils";
+import { generateVisualDataTask } from "../../utils";
+import { IconText } from "./IconText";
 
 interface TaskProps {
   task: CreatedTask;
 }
 
 export function Task({ task }: TaskProps) {
-  const { title, status, priority } = task;
+  const { title, statusText, statusIcon, priorityText, priorityIcon } =
+    generateVisualDataTask(task);
 
   return (
     <Flex
@@ -20,9 +22,9 @@ export function Task({ task }: TaskProps) {
       py={{ base: "1", md: "3" }}
     >
       <Text maxW="80%">{title}</Text>
-      <Flex maxW="15%" w="150px" justifyContent="space-between">
-        <Text>{formatCapitalizeLower(status)}</Text>
-        <Text>{formatCapitalizeLower(priority)}</Text>
+      <Flex maxW="15%" w="185px" justifyContent="space-between">
+        <IconText Icon={statusIcon} text={statusText} />
+        <IconText Icon={priorityIcon} text={priorityText} />
       </Flex>
     </Flex>
   );
