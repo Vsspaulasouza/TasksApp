@@ -1,5 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { type CreatedTask } from "../../types";
+import { formatCapitalizeLower } from "../../utils";
 
 interface TaskProps {
   task: CreatedTask;
@@ -20,8 +21,8 @@ export function Task({ task }: TaskProps) {
     >
       <Text maxW="80%">{title}</Text>
       <Flex maxW="15%" w="150px" justifyContent="space-between">
-        <Text>{status}</Text>
-        <Text>{priority}</Text>
+        <Text>{formatCapitalizeLower(status)}</Text>
+        <Text>{formatCapitalizeLower(priority)}</Text>
       </Flex>
     </Flex>
   );
