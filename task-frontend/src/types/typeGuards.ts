@@ -3,6 +3,8 @@ import {
   type CreatedTask,
   type CreatedUser,
   type CustomError,
+  type Priority,
+  type Status,
 } from ".";
 
 export function isCreatedUser(value: unknown): value is CreatedUser {
@@ -43,6 +45,24 @@ export function isCustomError(value: unknown): value is CustomError {
   );
 }
 
+export function isStatus(value: unknown): value is Status {
+  return (
+    value !== undefined &&
+    value !== null &&
+    typeof value === "string" &&
+    (value === "TODO" || value === "DOING" || value === "DONE")
+  );
+}
+
+export function isPriority(value: unknown): value is Priority {
+  return (
+    value !== undefined &&
+    value !== null &&
+    typeof value === "string" &&
+    (value === "LOW" || value === "MEDIUM" || value === "HIGH")
+  );
+}
+
 export function isCreatedTask(value: unknown): value is CreatedTask {
   return (
     value !== undefined &&
@@ -53,9 +73,9 @@ export function isCreatedTask(value: unknown): value is CreatedTask {
     "title" in value &&
     typeof value.title === "string" &&
     "status" in value &&
-    typeof value.status === "string" &&
+    isStatus(value.status) &&
     "priority" in value &&
-    typeof value.priority === "string"
+    isPriority(value.priority)
   );
 }
 
