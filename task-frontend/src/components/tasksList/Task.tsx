@@ -22,10 +22,10 @@ export function Task({ task }: TaskProps) {
       py={{ base: "1", md: "3" }}
     >
       <Text maxW="80%">{title}</Text>
-      <Flex maxW="15%" w="185px" justifyContent="space-between">
-        <IconText Icon={statusIcon} text={statusText} />
-        <IconText Icon={priorityIcon} text={priorityText} />
-      </Flex>
+          <Flex maxW="15%" w="200px" justifyContent="space-between">
+            <IconText Icon={statusIcon} text={statusText} width="66px" />
+            <IconText Icon={priorityIcon} text={priorityText} width="82px" />
+          </Flex>
     </Flex>
   );
 }
