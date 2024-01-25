@@ -18,7 +18,9 @@ export function formatCapitalizeLower(text: string) {
 
 export function cutText(text: string) {
   const MAX_CHARACTERS = 170;
-  return text.slice(0, MAX_CHARACTERS);
+
+  if (text.length <= MAX_CHARACTERS) return text;
+  return text.slice(0, MAX_CHARACTERS) + "...";
 }
 
 export function showToast(

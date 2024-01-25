@@ -37,7 +37,7 @@ export function Task({ task }: TaskProps) {
           px={{ base: "3", md: "6" }}
           py={{ base: "1", md: "3" }}
         >
-          <Text maxW="80%">{shortTitle + "..."}</Text>
+          <Text maxW="80%">{shortTitle}</Text>
           <Flex maxW="15%" w="200px" justifyContent="space-between">
             <IconText Icon={statusIcon} text={statusText} width="66px" />
             <IconText Icon={priorityIcon} text={priorityText} width="82px" />
