@@ -13,7 +13,7 @@ export function TaskListBar() {
       py={{ base: "1", md: "3" }}
     >
       <Text maxW="80%">Title</Text>
-      <Flex maxW="15%" w="200px" justifyContent="space-between">
+      <Flex maxW="15%" w="200px" mr="68px" justifyContent="space-between">
         <Text w="66px" textAlign="center">
           Status
         </Text>
