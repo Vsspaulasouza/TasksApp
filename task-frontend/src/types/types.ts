@@ -27,3 +27,5 @@ export interface Task {
 }
 
 export type CreatedTask = Task & { id: number };
+
+export type EditTask = Partial<Task>;

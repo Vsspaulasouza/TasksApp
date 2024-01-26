@@ -1,13 +1,12 @@
 import axios, { AxiosError } from "axios";
 import {
   type AuthCredentials,
-  type CreatedTask,
   type EditAuth,
   type NameUser,
-  type Task,
   type User,
 } from "../types";
 import { getToken } from "../utils";
+import { type EditTask, type Task } from "./../types/types";
 
 const instance = axios.create({
   baseURL: "http://localhost:3000",
@@ -128,13 +127,30 @@ export async function getTasks() {
   }
 }
 
-export async function deleteTasks(task: CreatedTask) {
+export async function deleteTask(taskId: number) {
   try {
     const token = getToken();
     const result = await instance({
       method: "delete",
       headers: { Authorization: `Bearer ${token}` },
-      url: `/tasks/${task.id}`,
+      url: `/tasks/${taskId}`,
+    });
+
+    return result.data;
+  } catch (error) {
+    if (error instanceof AxiosError) return error.response;
+    throw error;
+  }
+}
+
+export async function updateTask(taskId: number, data: EditTask) {
+  try {
+    const token = getToken();
+    const result = await instance({
+      method: "patch",
+      headers: { Authorization: `Bearer ${token}` },
+      url: `/tasks/${taskId}`,
+      data,
     });
 
     return result.data;

@@ -17,9 +17,15 @@ import {
 } from "@chakra-ui/react";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { ModalDelete } from "..";
-import { deleteTasks } from "../../api";
-import { isCustomError, type CreatedTask } from "../../types";
+import { deleteTask, updateTask } from "../../api";
+import {
+  isCustomError,
+  type CreatedTask,
+  type EditTask,
+  type Task as TaskType,
+} from "../../types";
 import { generateVisualDataTask, showToast } from "../../utils";
+import { TaskForm } from "../optionsBar/TaskForm";
 import { IconText } from "./IconText";
 
 interface TaskProps {
@@ -36,12 +42,12 @@ export function Task({ task }: TaskProps) {
     priorityIcon,
   } = generateVisualDataTask(task);
 
-  const deleteDisclosure = useDisclosure();
-
   const toast = useToast();
 
+  const deleteDisclosure = useDisclosure();
+
   const handleDelete = async () => {
-    const response = await deleteTasks(task);
+    const response = await deleteTask(task.id);
 
     if (response != null && isCustomError(response)) {
       const { message } = response;
@@ -51,6 +57,26 @@ export function Task({ task }: TaskProps) {
       deleteDisclosure.onClose();
       location.reload();
     }
+  };
+
+  const editDisclosure = useDisclosure();
+
+  const handleEdit = async (editData: EditTask) => {
+    const response = await updateTask(task.id, editData);
+
+    if (response != null && isCustomError(response)) {
+      const { message } = response;
+      showToast(toast, message, "error");
+    } else {
+      editDisclosure.onClose();
+      location.reload();
+    }
+  };
+
+  const editInitialValues: TaskType = {
+    title: task.title,
+    status: task.status,
+    priority: task.priority,
   };
 
   return (
@@ -80,7 +106,7 @@ export function Task({ task }: TaskProps) {
                 variant="solid"
               />
               <MenuList>
-                <MenuItem>Edit</MenuItem>
+                <MenuItem onClick={editDisclosure.onOpen}>Edit</MenuItem>
                 <MenuItem onClick={deleteDisclosure.onOpen}>Delete</MenuItem>
               </MenuList>
             </Menu>
@@ -91,6 +117,13 @@ export function Task({ task }: TaskProps) {
         <PopoverArrow />
         <PopoverBody>{title}</PopoverBody>
       </PopoverContent>
+
+      <TaskForm
+        disclosure={editDisclosure}
+        initialValues={editInitialValues}
+        onSubmit={handleEdit}
+        textButton="Edit"
+      />
 
       <ModalDelete
         disclosure={deleteDisclosure}
