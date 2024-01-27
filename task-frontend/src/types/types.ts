@@ -29,3 +29,12 @@ export interface Task {
 export type CreatedTask = Task & { id: number };
 
 export type EditTask = Partial<Task>;
+
+export interface Category {
+  name: string;
+  color: string;
+}
+
+export type CreatedCategory = Category & { id: number };
+
+export type EditCategory = Partial<Category>;

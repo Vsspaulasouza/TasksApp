@@ -30,3 +30,10 @@ export const postTaskValidation = object().shape({
     .required("Required")
     .oneOf<Priority>(["LOW", "MEDIUM", "HIGH"]),
 });
+
+export const postCategoryValidation = object().shape({
+  name: string().required("Required").min(1, "Not empty"),
+  color: string()
+    .required("Required")
+    .matches(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i),
+});

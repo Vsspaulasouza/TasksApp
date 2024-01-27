@@ -8,7 +8,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { IoEllipsisVertical } from "react-icons/io5";
-import { ModalDelete } from "..";
+import { ModalDelete, TaskForm } from "..";
 import { deleteTask, updateTask } from "../../api";
 import {
   isCustomError,
@@ -17,7 +17,6 @@ import {
   type Task as TaskType,
 } from "../../types";
 import { showToast } from "../../utils";
-import { TaskForm } from "../TaskForm";
 
 interface TaskMenuProps {
   task: CreatedTask;
