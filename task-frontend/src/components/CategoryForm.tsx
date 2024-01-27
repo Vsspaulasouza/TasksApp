@@ -52,7 +52,7 @@ export function CategoryForm({
         >
           {({ handleSubmit, errors, touched }) => (
             <form onSubmit={handleSubmit}>
-              <ModalHeader>Create your task</ModalHeader>
+              <ModalHeader>Create your category</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={6}>
                 <Stack spacing="6">
