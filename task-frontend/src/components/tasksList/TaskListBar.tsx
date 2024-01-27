@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, HStack, Text } from "@chakra-ui/react";
 
 export function TaskListBar() {
   return (
@@ -12,15 +12,15 @@ export function TaskListBar() {
       px={{ base: "3", md: "6" }}
       py={{ base: "1", md: "3" }}
     >
-      <Text maxW="80%">Title</Text>
-      <Flex maxW="15%" w="200px" mr="68px" justifyContent="space-between">
+      <Text maxW="75%">Title</Text>
+      <HStack spacing="50px" mr="90px">
         <Text w="66px" textAlign="center">
           Status
         </Text>
         <Text w="82px" textAlign="center">
           Priority
         </Text>
-      </Flex>
+      </HStack>
     </Flex>
   );
 }

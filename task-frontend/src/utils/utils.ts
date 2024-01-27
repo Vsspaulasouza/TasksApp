@@ -17,7 +17,7 @@ export function formatCapitalizeLower(text: string) {
 }
 
 export function cutText(text: string) {
-  const MAX_CHARACTERS = 160;
+  const MAX_CHARACTERS = 130;
 
   if (text.length <= MAX_CHARACTERS) return text;
   return text.slice(0, MAX_CHARACTERS) + "...";
@@ -68,4 +68,8 @@ export function generateVisualDataTask(task: CreatedTask) {
     statusIcon: statusIconMap[status],
     priorityIcon: priorityIconMap[priority],
   };
+}
+
+export function makeColorTransparent(color: string) {
+  return color + "26";
 }

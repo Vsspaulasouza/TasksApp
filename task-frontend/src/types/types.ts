@@ -24,6 +24,7 @@ export interface Task {
   title: string;
   status: Status;
   priority: Priority;
+  categories: CreatedCategory[];
 }
 
 export type CreatedTask = Task & { id: number };

@@ -1,4 +1,5 @@
 import {
+  Badge,
   Flex,
   HStack,
   Popover,
@@ -9,7 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { type CreatedTask } from "../../types";
-import { generateVisualDataTask } from "../../utils";
+import { generateVisualDataTask, makeColorTransparent } from "../../utils";
 import { IconText } from "./IconText";
 import { TaskMenu } from "./TaskMenu";
 
@@ -40,12 +41,20 @@ export function Task({ task }: TaskProps) {
           py={{ base: "1", md: "3" }}
         >
           <Text maxW="75%">{shortTitle}</Text>
-          <HStack maxW="20%" spacing="7">
-            <Flex w="200px" justifyContent="space-between">
-              <IconText Icon={statusIcon} text={statusText} width="66px" />
-              <IconText Icon={priorityIcon} text={priorityText} width="82px" />
-            </Flex>
-
+          <HStack spacing="50px" ml="10px">
+            <HStack>
+              {task.categories.map((category) => (
+                <Badge
+                  key={category.id}
+                  color={category.color}
+                  bgColor={makeColorTransparent(category.color)}
+                >
+                  {category.name}
+                </Badge>
+              ))}
+            </HStack>
+            <IconText Icon={statusIcon} text={statusText} width="66px" />
+            <IconText Icon={priorityIcon} text={priorityText} width="82px" />
             <TaskMenu task={task} />
           </HStack>
         </Flex>
