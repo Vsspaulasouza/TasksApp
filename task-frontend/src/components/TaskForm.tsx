@@ -14,9 +14,9 @@ import {
 } from "@chakra-ui/react";
 import { Field, Formik } from "formik";
 import { useRef } from "react";
-import { CustomFormField } from "..";
-import { type Task } from "../../types";
-import { postTaskValidation } from "../../validations";
+import { CustomFormField } from ".";
+import { type Task } from "../types";
+import { postTaskValidation } from "../validations";
 
 interface TaskFormProps {
   textButton: string;

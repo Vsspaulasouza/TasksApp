@@ -3,7 +3,7 @@ import { IoAddOutline } from "react-icons/io5";
 import { postTask } from "../../api";
 import { isCustomError, type Task } from "../../types";
 import { showToast } from "../../utils";
-import { TaskForm } from "./TaskForm";
+import { TaskForm } from "../TaskForm";
 
 export function OptionsBar() {
   const disclosure = useDisclosure();

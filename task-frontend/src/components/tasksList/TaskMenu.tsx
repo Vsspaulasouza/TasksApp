@@ -17,7 +17,7 @@ import {
   type Task as TaskType,
 } from "../../types";
 import { showToast } from "../../utils";
-import { TaskForm } from "../optionsBar/TaskForm";
+import { TaskForm } from "../TaskForm";
 
 interface TaskMenuProps {
   task: CreatedTask;
