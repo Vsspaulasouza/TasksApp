@@ -1,5 +1,5 @@
 import { Button, useDisclosure, useToast } from "@chakra-ui/react";
-import { IoPricetagOutline } from "react-icons/io5";
+import { IoAddOutline } from "react-icons/io5";
 import { CategoryForm } from "..";
 import { postCategory } from "../../api";
 import { isCustomError, type Category } from "../../types";
@@ -7,10 +7,9 @@ import { showToast } from "../../utils";
 
 export function CreateCategory() {
   const toast = useToast();
-
   const disclosure = useDisclosure();
 
-  const onSubmit = async (category: Category) => {
+  const handleCreate = async (category: Category) => {
     const response = await postCategory(category);
 
     if (response != null && isCustomError(response)) {
@@ -32,13 +31,13 @@ export function CreateCategory() {
       <Button
         onClick={disclosure.onOpen}
         variant="outline"
-        leftIcon={<IoPricetagOutline />}
+        leftIcon={<IoAddOutline />}
       >
         Create category
       </Button>
       <CategoryForm
         disclosure={disclosure}
-        onSubmit={onSubmit}
+        onSubmit={handleCreate}
         initialValues={initialValues}
         textButton="Create"
       />

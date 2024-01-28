@@ -6,7 +6,12 @@ import {
   type User,
 } from "../types";
 import { getToken } from "../utils";
-import { type Category, type EditTask, type Task } from "./../types/types";
+import {
+  type Category,
+  type EditCategory,
+  type EditTask,
+  type Task,
+} from "./../types/types";
 
 const instance = axios.create({
   baseURL: "http://localhost:3000",
@@ -167,6 +172,55 @@ export async function postCategory(data: Category) {
       method: "post",
       headers: { Authorization: `Bearer ${token}` },
       url: "/categories",
+      data,
+    });
+
+    return result.data;
+  } catch (error) {
+    if (error instanceof AxiosError) return error.response;
+    throw error;
+  }
+}
+
+export async function getCategories() {
+  try {
+    const token = getToken();
+    const result = await instance({
+      method: "get",
+      headers: { Authorization: `Bearer ${token}` },
+      url: "/categories",
+    });
+
+    return result.data;
+  } catch (error) {
+    if (error instanceof AxiosError) return error.response;
+    throw error;
+  }
+}
+
+export async function deleteCategory(categoryId: number) {
+  try {
+    const token = getToken();
+    const result = await instance({
+      method: "delete",
+      headers: { Authorization: `Bearer ${token}` },
+      url: `/categories/${categoryId}`,
+    });
+
+    return result.data;
+  } catch (error) {
+    if (error instanceof AxiosError) return error.response;
+    throw error;
+  }
+}
+
+export async function updateCategory(categoryId: number, data: EditCategory) {
+  try {
+    const token = getToken();
+    const result = await instance({
+      method: "patch",
+      headers: { Authorization: `Bearer ${token}` },
+      url: `/categories/${categoryId}`,
       data,
     });
 

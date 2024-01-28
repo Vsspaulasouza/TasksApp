@@ -1,5 +1,6 @@
 import {
   type AuthCredentials,
+  type CreatedCategory,
   type CreatedTask,
   type CreatedUser,
   type CustomError,
@@ -85,5 +86,30 @@ export function isCreatedTaskArray(value: unknown): value is CreatedTask[] {
     value !== null &&
     value instanceof Array &&
     isCreatedTask(value[0])
+  );
+}
+
+export function isCreatedCategory(value: unknown): value is CreatedCategory {
+  return (
+    value !== undefined &&
+    value !== null &&
+    typeof value === "object" &&
+    "id" in value &&
+    typeof value.id === "number" &&
+    "name" in value &&
+    typeof value.name === "string" &&
+    "color" in value &&
+    typeof value.color === "string"
+  );
+}
+
+export function isCreatedCategoryArray(
+  value: unknown
+): value is CreatedCategory[] {
+  return (
+    value !== undefined &&
+    value !== null &&
+    value instanceof Array &&
+    isCreatedCategory(value[0])
   );
 }
