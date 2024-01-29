@@ -28,7 +28,10 @@ export interface Task {
   categoriesIds?: CategoriesIds;
 }
 
-export type CreatedTask = Task & { id: number };
+export type CreatedTask = Omit<Task, "categoriesIds"> & {
+  id: number;
+  categories: CreatedCategory[];
+};
 
 export type EditTask = Partial<Task>;
 
