@@ -12,10 +12,11 @@ import {
   Select,
   Stack,
 } from "@chakra-ui/react";
+import { Select as AntdSelect, type SelectProps } from "antd";
 import { Field, Formik } from "formik";
 import { useRef } from "react";
 import { CustomFormField } from ".";
-import { type Task } from "../types";
+import { type CategoriesIds, type CreatedCategory, type Task } from "../types";
 import { postTaskValidation } from "../validations";
 
 interface TaskFormProps {
@@ -26,6 +27,7 @@ interface TaskFormProps {
     isOpen: boolean;
     onClose: () => void;
   };
+  categories: CreatedCategory[];
 }
 
 export function TaskForm({
@@ -33,11 +35,16 @@ export function TaskForm({
   onSubmit,
   initialValues,
   disclosure,
+  categories,
 }: TaskFormProps) {
   const initialRef = useRef(null);
   const finalRef = useRef(null);
 
   const { isOpen, onClose } = disclosure;
+
+  const options: SelectProps["options"] = categories?.map((category) => {
+    return { label: category.name, value: category.id };
+  });
 
   return (
     <Modal
@@ -53,7 +60,7 @@ export function TaskForm({
           validationSchema={postTaskValidation}
           onSubmit={onSubmit}
         >
-          {({ handleSubmit, errors, touched }) => (
+          {({ handleSubmit, errors, touched, setFieldValue }) => (
             <form onSubmit={handleSubmit}>
               <ModalHeader>Create your task</ModalHeader>
               <ModalCloseButton />
@@ -87,6 +94,29 @@ export function TaskForm({
                       <option value="MEDIUM">Medium</option>
                       <option value="HIGH">High</option>
                     </Field>
+                  </FormControl>
+
+                  <FormControl>
+                    <FormLabel htmlFor="categories" fontWeight="bold">
+                      Categories
+                    </FormLabel>
+                    <AntdSelect
+                      id="categories"
+                      mode="multiple"
+                      allowClear
+                      style={{ width: "100%" }}
+                      dropdownStyle={{ zIndex: 1450 }}
+                      placeholder="Select categories"
+                      options={options}
+                      onChange={(categoriesValues: CategoriesIds) => {
+                        void (async () => {
+                          await setFieldValue(
+                            "categoriesIds",
+                            categoriesValues
+                          );
+                        })();
+                      }}
+                    />
                   </FormControl>
                 </Stack>
               </ModalBody>

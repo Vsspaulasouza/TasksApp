@@ -20,11 +20,12 @@ export type MethodType = "get" | "post" | "update" | "delete";
 
 export type Status = "TODO" | "DOING" | "DONE";
 export type Priority = "LOW" | "MEDIUM" | "HIGH";
+export type CategoriesIds = number[];
 export interface Task {
   title: string;
   status: Status;
   priority: Priority;
-  categories: CreatedCategory[];
+  categoriesIds?: CategoriesIds;
 }
 
 export type CreatedTask = Task & { id: number };

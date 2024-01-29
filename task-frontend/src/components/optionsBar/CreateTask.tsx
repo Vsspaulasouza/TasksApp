@@ -1,8 +1,14 @@
 import { Button, useDisclosure, useToast } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import { TaskForm } from "..";
-import { postTask } from "../../api";
-import { isCustomError, type Task } from "../../types";
+import { getCategories, postTask } from "../../api";
+import {
+  isCreatedCategoryArray,
+  isCustomError,
+  type CreatedCategory,
+  type Task,
+} from "../../types";
 import { showToast } from "../../utils";
 
 export function CreateTask() {
@@ -26,7 +32,25 @@ export function CreateTask() {
     title: "",
     status: "TODO",
     priority: "LOW",
+    categoriesIds: [],
   };
+
+  const [categories, setCategories] = useState<CreatedCategory[]>([]);
+
+  useEffect(() => {
+    const requestCategories = async () => {
+      const response = await getCategories();
+
+      if (response != null && isCustomError(response)) {
+        const { message } = response;
+        showToast(toast, message, "error");
+      } else {
+        if (isCreatedCategoryArray(response)) setCategories(response);
+      }
+    };
+
+    void requestCategories();
+  }, []);
 
   return (
     <>
@@ -43,6 +67,7 @@ export function CreateTask() {
         onSubmit={onSubmit}
         initialValues={initialValues}
         disclosure={disclosure}
+        categories={categories}
       />
     </>
   );
