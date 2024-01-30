@@ -105,6 +105,7 @@ export function TaskForm({
                       mode="multiple"
                       allowClear
                       style={{ width: "100%" }}
+                      size="large"
                       dropdownStyle={{ zIndex: 1450 }}
                       placeholder="Select categories"
                       options={options}

@@ -41,3 +41,8 @@ export function Home() {
     </Container>
   );
 }
+
+// TODO: filtrar tasks
+// TODO: ordenar tasks
+// TODO: responsividade
+// TODO: readme
