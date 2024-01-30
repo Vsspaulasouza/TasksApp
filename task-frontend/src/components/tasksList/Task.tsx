@@ -59,7 +59,10 @@ export function Task({ task }: TaskProps) {
           </HStack>
         </Flex>
       </PopoverTrigger>
-      <PopoverContent w={{ base: "300px", md: "1200px" }}>
+      <PopoverContent
+        w={{ base: "300px", md: "1200px" }}
+        hidden={title.length <= 150}
+      >
         <PopoverArrow />
         <PopoverBody>{title}</PopoverBody>
       </PopoverContent>
