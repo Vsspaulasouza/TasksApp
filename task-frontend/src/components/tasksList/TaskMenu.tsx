@@ -7,11 +7,14 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { ModalDelete, TaskForm } from "..";
-import { deleteTask, updateTask } from "../../api";
+import { deleteTask, getCategories, updateTask } from "../../api";
 import {
+  isCreatedCategoryArray,
   isCustomError,
+  type CreatedCategory,
   type CreatedTask,
   type EditTask,
   type Task as TaskType,
@@ -39,10 +42,13 @@ export function TaskMenu({ task }: TaskMenuProps) {
   };
 
   const deleteDisclosure = useDisclosure();
+
+  const categoriesIds = task?.categories.map((category) => category.id);
   const editInitialValues: TaskType = {
     title: task.title,
     status: task.status,
     priority: task.priority,
+    categoriesIds,
   };
 
   const handleDelete = async () => {
@@ -57,6 +63,23 @@ export function TaskMenu({ task }: TaskMenuProps) {
       location.reload();
     }
   };
+
+  const [categories, setCategories] = useState<CreatedCategory[]>([]);
+
+  useEffect(() => {
+    const requestCategories = async () => {
+      const response = await getCategories();
+
+      if (response != null && isCustomError(response)) {
+        const { message } = response;
+        showToast(toast, message, "error");
+      } else {
+        if (isCreatedCategoryArray(response)) setCategories(response);
+      }
+    };
+
+    void requestCategories();
+  }, []);
 
   return (
     <Menu>
@@ -77,6 +100,7 @@ export function TaskMenu({ task }: TaskMenuProps) {
         initialValues={editInitialValues}
         onSubmit={handleEdit}
         textButton="Edit"
+        categories={categories}
       />
 
       <ModalDelete

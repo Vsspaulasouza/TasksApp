@@ -108,6 +108,7 @@ export function TaskForm({
                       dropdownStyle={{ zIndex: 1450 }}
                       placeholder="Select categories"
                       options={options}
+                      defaultValue={initialValues.categoriesIds}
                       onChange={(categoriesValues: CategoriesIds) => {
                         void (async () => {
                           await setFieldValue(
