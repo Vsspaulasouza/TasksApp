@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getUser } from "../api";
 import { HeaderHome } from "../components";
 import { OptionsBar } from "../components/optionsBar";
-import { TaskListBar, TasksList } from "../components/tasksList";
+import { TasksList } from "../components/tasksList";
 import { isCreatedUser, isCustomError, type CreatedUser } from "../types";
 import { showToast } from "../utils";
 
@@ -36,13 +36,14 @@ export function Home() {
     >
       <HeaderHome user={user} />
       <OptionsBar />
-      <TaskListBar />
       <TasksList />
     </Container>
   );
 }
 
+// TODO: mostrar aviso quando não tiver categories
 // TODO: filtrar tasks
 // TODO: ordenar tasks
+// TODO: olhar como fica no light mode, se ficar bom adicionar a opção de trocar
 // TODO: responsividade
 // TODO: readme
