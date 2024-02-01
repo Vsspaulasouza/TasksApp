@@ -41,6 +41,7 @@ export function Home() {
   );
 }
 
+// TODO: corrigir erro de mostrar o toast e recarregar
 // TODO: mostrar aviso quando não tiver categories
 // TODO: filtrar tasks
 // TODO: ordenar tasks
