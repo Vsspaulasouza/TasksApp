@@ -17,6 +17,8 @@ export function CreateTask() {
   const disclosure = useDisclosure();
 
   const onSubmit = async (task: Task) => {
+    if (task.categoriesIds?.length === 0) delete task.categoriesIds;
+
     const response = await postTask(task);
 
     if (response != null && isCustomError(response)) {
