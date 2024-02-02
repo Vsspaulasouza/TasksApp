@@ -40,12 +40,3 @@ export function Home() {
     </Container>
   );
 }
-
-// TODO: corrigir erro de mostrar o toast e recarregar
-// TODO: mostrar aviso quando não tiver categories
-// TODO: filtrar tasks
-// TODO: ordenar tasks
-// TODO: deixar color pick mais bonito
-// TODO: olhar como fica no light mode, se ficar bom adicionar a opção de trocar
-// TODO: responsividade
-// TODO: readme
