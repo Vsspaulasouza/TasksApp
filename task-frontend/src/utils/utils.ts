@@ -7,7 +7,11 @@ import {
   IoEllipseOutline,
   IoStopwatchOutline,
 } from "react-icons/io5";
-import { type CreatedTask } from "../types";
+import {
+  type CreatedTask,
+  type FilterTasksAction,
+  type FilterTasksState,
+} from "../types";
 export function capitalize(text: string) {
   return text[0].toUpperCase() + text.slice(1);
 }
@@ -72,4 +76,38 @@ export function generateVisualDataTask(task: CreatedTask) {
 
 export function makeColorTransparent(color: string) {
   return color + "26";
+}
+
+export function filterTasksReducer(
+  state: FilterTasksState,
+  action: FilterTasksAction
+): FilterTasksState {
+  const { atribute, payload } = action;
+
+  return {
+    ...state,
+    [atribute]: payload,
+  };
+}
+
+function hasAnyTrue(values: boolean[]): boolean {
+  return values.some((value) => value);
+}
+
+export function filterTasks(tasks: CreatedTask[], state: FilterTasksState) {
+  const statusArray = Object.values(state).slice(0, 3) as boolean[];
+  const priorityArray = Object.values(state).slice(3) as boolean[];
+
+  const statusSelected = hasAnyTrue(statusArray);
+  const prioritySelected = hasAnyTrue(priorityArray);
+
+  if (!statusSelected && !prioritySelected) return tasks;
+
+  if (statusSelected && !prioritySelected)
+    return tasks.filter((task) => state[task.status]);
+
+  if (!statusSelected && prioritySelected)
+    return tasks.filter((task) => state[task.priority]);
+
+  return tasks.filter((task) => state[task.status] && state[task.priority]);
 }

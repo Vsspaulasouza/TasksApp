@@ -12,17 +12,27 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { IoFilter } from "react-icons/io5";
-import { type Priority, type Status } from "../../types";
+import {
+  isPriority,
+  isStatus,
+  type FilterTasksAction,
+  type Priority,
+  type Status,
+} from "../../types";
 import { formatCapitalizeLower } from "../../utils";
 
-export function FilterTasks() {
+interface FilterTasksProps {
+  filterTasksDispatch: React.Dispatch<FilterTasksAction>;
+}
+
+export function FilterTasks({ filterTasksDispatch }: FilterTasksProps) {
   const statusOptions: Status[] = ["TODO", "DOING", "DONE"] as const;
   const priorityOptions: Priority[] = ["LOW", "MEDIUM", "HIGH"] as const;
 
   const onChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = target;
-
-    console.log(value, checked);
+    if (isStatus(value) || isPriority(value))
+      filterTasksDispatch({ atribute: value, payload: checked });
   };
 
   return (

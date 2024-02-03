@@ -7,11 +7,16 @@ import {
   isCreatedTaskArray,
   isCustomError,
   type CreatedTask,
+  type FilterTasksState,
 } from "../../types";
-import { showToast } from "../../utils";
+import { filterTasks, showToast } from "../../utils";
 import { Task } from "./Task";
 
-export function TasksList() {
+interface TasksListProps {
+  filterTasksState: FilterTasksState;
+}
+
+export function TasksList({ filterTasksState }: TasksListProps) {
   const toast = useToast();
 
   const [tasks, setTasks] = useState<CreatedTask[]>([]);
@@ -37,7 +42,7 @@ export function TasksList() {
     <>
       <TaskListBar />
       <Stack spacing="0">
-        {tasks.map((task) => (
+        {filterTasks(tasks, filterTasksState).map((task) => (
           <Task key={task.id} task={task} />
         ))}
       </Stack>

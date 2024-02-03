@@ -43,3 +43,18 @@ export interface Category {
 export type CreatedCategory = Category & { id: number };
 
 export type EditCategory = Partial<Category>;
+
+export interface FilterTasksAction {
+  atribute: Status | Priority;
+  payload: boolean;
+}
+
+export interface FilterTasksState {
+  TODO: boolean;
+  DOING: boolean;
+  DONE: boolean;
+
+  LOW: boolean;
+  MEDIUM: boolean;
+  HIGH: boolean;
+}
