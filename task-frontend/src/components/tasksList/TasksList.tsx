@@ -1,5 +1,5 @@
 import { Stack, useToast } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { TaskListBar } from ".";
 import { NoData } from "..";
 import { getTasks } from "../../api";
@@ -8,8 +8,14 @@ import {
   isCustomError,
   type CreatedTask,
   type FilterTasksState,
+  type OrderTasksState,
 } from "../../types";
-import { filterTasks, showToast } from "../../utils";
+import {
+  filterTasks,
+  orderTasks,
+  orderTasksReducer,
+  showToast,
+} from "../../utils";
 import { Task } from "./Task";
 
 interface TasksListProps {
@@ -36,13 +42,30 @@ export function TasksList({ filterTasksState }: TasksListProps) {
     void requestTasks();
   }, []);
 
-  return tasks.length === 0 ? (
-    <NoData text="No tasks created" />
-  ) : (
+  const orderTasksInitialState: OrderTasksState = {
+    title: "initial",
+    status: "initial",
+    priority: "initial",
+  };
+
+  const [orderTasksState, orderTasksDispatch] = useReducer(
+    orderTasksReducer,
+    orderTasksInitialState
+  );
+
+  if (tasks.length === 0) return <NoData text="No tasks created" />;
+
+  let filteredOrderedTasks = filterTasks(tasks, filterTasksState);
+  filteredOrderedTasks = orderTasks(filteredOrderedTasks, orderTasksState);
+
+  return (
     <>
-      <TaskListBar />
+      <TaskListBar
+        orderTasksState={orderTasksState}
+        orderTasksDispatch={orderTasksDispatch}
+      />
       <Stack spacing="0">
-        {filterTasks(tasks, filterTasksState).map((task) => (
+        {filteredOrderedTasks.map((task) => (
           <Task key={task.id} task={task} />
         ))}
       </Stack>

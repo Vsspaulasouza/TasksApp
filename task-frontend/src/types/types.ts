@@ -58,3 +58,16 @@ export interface FilterTasksState {
   MEDIUM: boolean;
   HIGH: boolean;
 }
+
+export type Order = "initial" | "ascending" | "descending";
+
+export interface OrderTasksAction {
+  atribute: "title" | "status" | "priority";
+  order: Order;
+}
+
+export interface OrderTasksState {
+  title: Order;
+  status: Order;
+  priority: Order;
+}

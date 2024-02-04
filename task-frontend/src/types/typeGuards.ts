@@ -4,6 +4,7 @@ import {
   type CreatedTask,
   type CreatedUser,
   type CustomError,
+  type Order,
   type Priority,
   type Status,
 } from ".";
@@ -111,5 +112,25 @@ export function isCreatedCategoryArray(
     value !== null &&
     value instanceof Array &&
     isCreatedCategory(value[0])
+  );
+}
+
+export function isOrder(value: unknown): value is Order {
+  return (
+    value !== undefined &&
+    value !== null &&
+    typeof value === "string" &&
+    (value === "initial" || value === "ascending" || value === "descending")
+  );
+}
+
+export function isOrderAtribute(
+  value: unknown
+): value is "title" | "status" | "priority" {
+  return (
+    value !== undefined &&
+    value !== null &&
+    typeof value === "string" &&
+    (value === "title" || value === "status" || value === "priority")
   );
 }
