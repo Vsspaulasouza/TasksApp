@@ -28,6 +28,7 @@ interface TaskFormProps {
     onClose: () => void;
   };
   categories: CreatedCategory[];
+  title: string;
 }
 
 export function TaskForm({
@@ -36,6 +37,7 @@ export function TaskForm({
   initialValues,
   disclosure,
   categories,
+  title,
 }: TaskFormProps) {
   const initialRef = useRef(null);
   const finalRef = useRef(null);
@@ -62,7 +64,7 @@ export function TaskForm({
         >
           {({ handleSubmit, errors, touched, setFieldValue }) => (
             <form onSubmit={handleSubmit}>
-              <ModalHeader>Create your task</ModalHeader>
+              <ModalHeader>{title}</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={6}>
                 <Stack spacing="6">

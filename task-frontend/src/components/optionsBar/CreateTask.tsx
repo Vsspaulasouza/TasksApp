@@ -70,6 +70,7 @@ export function CreateTask() {
         initialValues={initialValues}
         disclosure={disclosure}
         categories={categories}
+        title="Create your task"
       />
     </>
   );

@@ -101,6 +101,7 @@ export function TaskMenu({ task }: TaskMenuProps) {
         onSubmit={handleEdit}
         textButton="Edit"
         categories={categories}
+        title="Edit task"
       />
 
       <ModalDelete
