@@ -76,6 +76,7 @@ export function CategoriesMenu({ category }: CategoriesMenuProps) {
         initialValues={editInitialValues}
         onSubmit={handleEdit}
         textButton="Edit"
+        title="Edit category"
       />
 
       <ModalDelete

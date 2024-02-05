@@ -40,6 +40,7 @@ export function CreateCategory() {
         onSubmit={handleCreate}
         initialValues={initialValues}
         textButton="Create"
+        title="Create your category"
       />
     </>
   );

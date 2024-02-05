@@ -4,6 +4,7 @@ import {
   FormLabel,
   Input,
 } from "@chakra-ui/react";
+import { type Property } from "csstype";
 import { Field } from "formik";
 import { capitalize } from "../utils";
 
@@ -13,6 +14,9 @@ interface CustomFormFieldProps {
   isTouched: undefined | boolean;
   label?: string;
   type?: React.HTMLInputTypeAttribute;
+  padding?: Property.Padding;
+  width?: Property.Width;
+  cursor?: Property.Cursor;
 }
 
 export function CustomFormField({
@@ -21,6 +25,9 @@ export function CustomFormField({
   isTouched,
   label,
   type,
+  padding,
+  width,
+  cursor,
 }: CustomFormFieldProps) {
   const fieldLabel = label ?? capitalize(fieldName);
 
@@ -29,7 +36,15 @@ export function CustomFormField({
       <FormLabel htmlFor={fieldName} fontWeight="bold">
         {fieldLabel}
       </FormLabel>
-      <Field as={Input} id={fieldName} name={fieldName} type={type} />
+      <Field
+        as={Input}
+        id={fieldName}
+        name={fieldName}
+        type={type}
+        padding={padding}
+        width={width}
+        cursor={cursor}
+      />
       <FormErrorMessage>{error}</FormErrorMessage>
     </FormControl>
   );

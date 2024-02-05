@@ -23,6 +23,7 @@ interface CategoryFormProps {
     isOpen: boolean;
     onClose: () => void;
   };
+  title: string;
 }
 
 export function CategoryForm({
@@ -30,6 +31,7 @@ export function CategoryForm({
   onSubmit,
   initialValues,
   disclosure,
+  title,
 }: CategoryFormProps) {
   const initialRef = useRef(null);
   const finalRef = useRef(null);
@@ -52,7 +54,7 @@ export function CategoryForm({
         >
           {({ handleSubmit, errors, touched }) => (
             <form onSubmit={handleSubmit}>
-              <ModalHeader>Create your category</ModalHeader>
+              <ModalHeader>{title}</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={6}>
                 <Stack spacing="6">
@@ -70,6 +72,9 @@ export function CategoryForm({
                     error={errors.color}
                     isTouched={touched.color}
                     type="color"
+                    width="50px"
+                    padding="1"
+                    cursor="pointer"
                   />
                 </Stack>
               </ModalBody>
