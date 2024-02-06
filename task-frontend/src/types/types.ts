@@ -60,9 +60,10 @@ export interface FilterTasksState {
 }
 
 export type Order = "initial" | "ascending" | "descending";
+export type OrderAttribute = "title" | "status" | "priority";
 
 export interface OrderTasksAction {
-  atribute: "title" | "status" | "priority";
+  atribute: OrderAttribute;
   order: Order;
 }
 

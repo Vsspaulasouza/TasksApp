@@ -8,12 +8,14 @@ import {
   IoStopwatchOutline,
 } from "react-icons/io5";
 import {
+  isOrderAtribute,
   type CreatedTask,
   type FilterTasksAction,
   type FilterTasksState,
   type OrderTasksAction,
 } from "../types";
 import {
+  type OrderAttribute,
   type OrderTasksState,
   type Priority,
   type Status,
@@ -147,14 +149,43 @@ function compareStatus(status1: Status, status2: Status): number {
     DOING: 1,
     DONE: 2,
   };
-  // const order = ["TODO", "DOING", "DONE"];
+
   return order[status1] - order[status2];
 }
 
 function comparePriority(priority1: Priority, priority2: Priority): number {
   const order = { LOW: 0, MEDIUM: 1, HIGH: 2 };
-  // const order = ["LOW", "MEDIUM", "HIGH"];
   return order[priority1] - order[priority2];
+}
+
+function getComparisonFunction(
+  attribute: OrderAttribute
+): (arg1: any, arg2: any) => number {
+  switch (attribute) {
+    case "title":
+      return compareStrings;
+    case "status":
+      return compareStatus;
+    case "priority":
+      return comparePriority;
+    default:
+      throw new Error("Invalid attribute");
+  }
+}
+
+function sortFunction(
+  attribute: OrderAttribute,
+  order: "ascending" | "descending"
+) {
+  const comparisonFunction = getComparisonFunction(attribute);
+
+  if (order === "ascending") {
+    return (a: CreatedTask, b: CreatedTask) =>
+      comparisonFunction(a[attribute], b[attribute]);
+  }
+
+  return (a: CreatedTask, b: CreatedTask) =>
+    comparisonFunction(b[attribute], a[attribute]);
 }
 
 export function orderTasks(tasks: CreatedTask[], state: OrderTasksState) {
@@ -168,18 +199,10 @@ export function orderTasks(tasks: CreatedTask[], state: OrderTasksState) {
   const sortedTasks = [...tasks];
 
   for (const key in state) {
-    if (key === "title" && state[key] === "ascending") {
-      sortedTasks.sort((a, b) => compareStrings(a.title, b.title));
-    } else if (key === "title" && state[key] === "descending") {
-      sortedTasks.sort((a, b) => compareStrings(b.title, a.title));
-    } else if (key === "status" && state[key] === "ascending") {
-      sortedTasks.sort((a, b) => compareStatus(a.status, b.status));
-    } else if (key === "status" && state[key] === "descending") {
-      sortedTasks.sort((a, b) => compareStatus(b.status, a.status));
-    } else if (key === "priority" && state[key] === "ascending") {
-      sortedTasks.sort((a, b) => comparePriority(a.priority, b.priority));
-    } else if (key === "priority" && state[key] === "descending") {
-      sortedTasks.sort((a, b) => comparePriority(b.priority, a.priority));
+    if (isOrderAtribute(key) && state[key] !== "initial") {
+      sortedTasks.sort(
+        sortFunction(key, state[key] as "ascending" | "descending")
+      );
     }
   }
 
