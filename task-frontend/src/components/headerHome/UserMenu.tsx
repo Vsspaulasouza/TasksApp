@@ -12,6 +12,7 @@ import { removeToken } from "../../utils";
 import { DeleteUserItem } from "./DeleteUserItem";
 import { EditCredentials } from "./EditCredentials";
 import { EditUserInfo } from "./EditUserInfo";
+import { ToggleColorMode } from "./ToggleColorMode";
 
 export function UserMenu() {
   const navigate = useNavigate();
@@ -31,6 +32,8 @@ export function UserMenu() {
         fontSize="20px"
       />
       <MenuList>
+        <ToggleColorMode />
+        <MenuDivider />
         <EditUserInfo />
         <EditCredentials />
         <DeleteUserItem />
