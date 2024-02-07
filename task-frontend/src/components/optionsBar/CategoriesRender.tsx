@@ -18,8 +18,7 @@ export function CategoriesRender({ categories }: CategoriesRenderProps) {
         borderTop="1px solid"
         borderTopRadius="6px"
         borderColor="gray.600"
-        px={{ base: "1", md: "3" }}
-        py={{ base: "1", md: "3" }}
+        p="3"
       >
         <HStack spacing="5" mr="90px">
           <Text w="39px" textAlign="center">
@@ -37,8 +36,7 @@ export function CategoriesRender({ categories }: CategoriesRenderProps) {
           border="1px solid"
           borderTop="none"
           borderColor="gray.600"
-          px={{ base: "1", md: "3" }}
-          py={{ base: "1", md: "3" }}
+          p="3"
         >
           <HStack spacing="5">
             <Icon as={IoRadioButtonOnOutline} color={category.color} w="39px" />

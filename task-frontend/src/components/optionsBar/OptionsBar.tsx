@@ -1,4 +1,4 @@
-import { HStack } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { type FilterTasksAction } from "../../types";
 import { CreateTask } from "./CreateTask";
 import { FilterTasks } from "./FilterTasks";
@@ -10,10 +10,15 @@ interface OptionsBarProps {
 
 export function OptionsBar({ filterTasksDispatch }: OptionsBarProps) {
   return (
-    <HStack pt={{ base: "8", md: "10" }} pb={{ base: "3", md: "5" }}>
+    <Flex
+      pt={{ base: "6", sm: "10" }}
+      pb={{ base: "5", sm: "5" }}
+      flexWrap="wrap"
+      gap="2"
+    >
       <CreateTask />
       <ManageCategories />
       <FilterTasks filterTasksDispatch={filterTasksDispatch} />
-    </HStack>
+    </Flex>
   );
 }

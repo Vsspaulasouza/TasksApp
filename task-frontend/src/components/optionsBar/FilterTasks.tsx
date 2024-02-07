@@ -42,7 +42,7 @@ export function FilterTasks({ filterTasksDispatch }: FilterTasksProps) {
           Filter tasks
         </Button>
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent maxW={{ base: "90%", sm: "318px" }} mx="2">
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverBody>

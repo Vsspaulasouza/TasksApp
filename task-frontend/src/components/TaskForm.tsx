@@ -56,7 +56,7 @@ export function TaskForm({
       onClose={onClose}
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent maxW={{ base: "95%", sm: "448px" }}>
         <Formik
           initialValues={initialValues}
           validationSchema={postTaskValidation}

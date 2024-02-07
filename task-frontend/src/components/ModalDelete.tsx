@@ -37,7 +37,7 @@ export function ModalDelete({
       onClose={onClose}
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent maxW={{ base: "95%", sm: "448px" }}>
         <ModalHeader>{header}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>This action cannot be undone</ModalBody>

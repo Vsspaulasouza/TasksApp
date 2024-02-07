@@ -2,8 +2,8 @@ import { Heading, Highlight, Stack, Text } from "@chakra-ui/react";
 
 export function Titles({ name }: { name: string | undefined }) {
   return (
-    <Stack spacing="1">
-      <Heading size={{ base: "2xl", md: "xl" }}>
+    <Stack spacing={{ base: "3", sm: "1" }}>
+      <Heading size="xl">
         Hello {name}, welcome to&nbsp;
         <Highlight
           query="Tasks"

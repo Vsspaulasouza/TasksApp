@@ -46,7 +46,7 @@ export function CategoryForm({
       onClose={onClose}
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent maxW={{ base: "95%", sm: "448px" }}>
         <Formik
           initialValues={initialValues}
           validationSchema={postCategoryValidation}
