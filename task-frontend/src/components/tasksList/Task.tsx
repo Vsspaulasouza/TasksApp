@@ -8,6 +8,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Text,
+  useColorMode,
 } from "@chakra-ui/react";
 import { type CreatedTask } from "../../types";
 import { generateVisualDataTask, makeColorTransparent } from "../../utils";
@@ -28,6 +29,8 @@ export function Task({ task }: TaskProps) {
     priorityIcon,
   } = generateVisualDataTask(task);
 
+  const { colorMode } = useColorMode();
+
   return (
     <Popover trigger="hover">
       <PopoverTrigger>
@@ -36,7 +39,7 @@ export function Task({ task }: TaskProps) {
           alignItems="center"
           border="1px solid"
           borderTop="none"
-          borderColor="gray.600"
+          borderColor={colorMode === "light" ? "#e2e8f0" : "whiteAlpha.300"}
           px={{ base: "3", md: "6" }}
           py={{ base: "1", md: "3" }}
         >

@@ -1,4 +1,4 @@
-import { Button, Flex, HStack } from "@chakra-ui/react";
+import { Button, Flex, HStack, useColorMode } from "@chakra-ui/react";
 import { IoArrowDown, IoArrowUp, IoSwapVertical } from "react-icons/io5";
 import {
   isOrder,
@@ -17,6 +17,8 @@ export function TaskListBar({
   orderTasksState,
   orderTasksDispatch,
 }: TaskListBarProps) {
+  const { colorMode } = useColorMode();
+
   const icons = {
     initial: <IoSwapVertical />,
     ascending: <IoArrowDown />,
@@ -54,7 +56,7 @@ export function TaskListBar({
       border="1px solid"
       borderTop="1px solid"
       borderTopRadius="6px"
-      borderColor="gray.600"
+      borderColor={colorMode === "light" ? "#e2e8f0" : "whiteAlpha.300"}
       px={{ base: "3", md: "6" }}
       py={{ base: "1", md: "3" }}
     >
