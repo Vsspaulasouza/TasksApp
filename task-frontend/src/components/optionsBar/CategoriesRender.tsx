@@ -1,4 +1,4 @@
-import { Flex, HStack, Icon, Text } from "@chakra-ui/react";
+import { Flex, HStack, Icon, Text, useColorMode } from "@chakra-ui/react";
 import { IoRadioButtonOnOutline } from "react-icons/io5";
 import { type CreatedCategory } from "../../types";
 import { CategoriesMenu } from "./CategoriesMenu";
@@ -8,6 +8,8 @@ interface CategoriesRenderProps {
 }
 
 export function CategoriesRender({ categories }: CategoriesRenderProps) {
+  const { colorMode } = useColorMode();
+
   return (
     <>
       <Flex
@@ -17,7 +19,7 @@ export function CategoriesRender({ categories }: CategoriesRenderProps) {
         border="1px solid"
         borderTop="1px solid"
         borderTopRadius="6px"
-        borderColor="gray.600"
+        borderColor={colorMode === "light" ? "#e2e8f0" : "whiteAlpha.300"}
         p="3"
       >
         <HStack spacing="5" mr="90px">
@@ -35,7 +37,7 @@ export function CategoriesRender({ categories }: CategoriesRenderProps) {
           alignItems="center"
           border="1px solid"
           borderTop="none"
-          borderColor="gray.600"
+          borderColor={colorMode === "light" ? "#e2e8f0" : "whiteAlpha.300"}
           p="3"
         >
           <HStack spacing="5">
