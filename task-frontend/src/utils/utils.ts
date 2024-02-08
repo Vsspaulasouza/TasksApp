@@ -28,13 +28,6 @@ export function formatCapitalizeLower(text: string) {
   return text[0].toUpperCase() + text.slice(1).toLowerCase();
 }
 
-export function cutText(text: string) {
-  const MAX_CHARACTERS = 130;
-
-  if (text.length <= MAX_CHARACTERS) return text;
-  return text.slice(0, MAX_CHARACTERS) + "...";
-}
-
 export function showToast(
   toast: CreateToastFnReturn,
   message: string,
@@ -74,7 +67,6 @@ export function generateVisualDataTask(task: CreatedTask) {
 
   return {
     title,
-    shortTitle: cutText(title),
     statusText: formatCapitalizeLower(status),
     priorityText: formatCapitalizeLower(priority),
     statusIcon: statusIconMap[status],

@@ -9,7 +9,10 @@ interface IconTextProps {
 
 export function IconText({ Icon, text, width }: IconTextProps) {
   return (
-    <HStack w={width === null ? "unset" : width}>
+    <HStack
+      w={width === null ? "unset" : width}
+      display={{ base: "none", md: "flex" }}
+    >
       <Icon />
       <Text>{text}</Text>
     </HStack>

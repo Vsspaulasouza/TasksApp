@@ -50,7 +50,7 @@ export function Home() {
     <Container
       maxW="100%"
       py={{ base: "6", md: "20" }}
-      px={{ base: "3", sm: "20" }}
+      px={{ base: "3", sm: "10", md: "15", lg: "20" }}
     >
       <HeaderHome user={user} />
       <OptionsBar filterTasksDispatch={filterTasksDispatch} />

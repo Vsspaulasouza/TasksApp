@@ -57,8 +57,9 @@ export function TaskListBar({
       borderTop="1px solid"
       borderTopRadius="6px"
       borderColor={colorMode === "light" ? "#e2e8f0" : "whiteAlpha.300"}
-      px={{ base: "3", md: "6" }}
-      py={{ base: "1", md: "3" }}
+      pl={{ base: "1", sm: "3" }}
+      pr={{ base: "3", sm: "8" }}
+      py={{ base: "1", sm: "3" }}
     >
       <Button
         value="title"
@@ -74,6 +75,7 @@ export function TaskListBar({
           variant="ghost"
           rightIcon={icons[orderTasksState.status]}
           onClick={changeOrder}
+          display={{ base: "none", md: "inline-flex" }}
         >
           Status
         </Button>
@@ -82,6 +84,7 @@ export function TaskListBar({
           variant="ghost"
           rightIcon={icons[orderTasksState.priority]}
           onClick={changeOrder}
+          display={{ base: "none", md: "inline-flex" }}
         >
           Priority
         </Button>

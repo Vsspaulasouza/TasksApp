@@ -1,7 +1,6 @@
 import {
   Badge,
   Flex,
-  HStack,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -20,55 +19,66 @@ interface TaskProps {
 }
 
 export function Task({ task }: TaskProps) {
-  const {
-    title,
-    shortTitle,
-    statusText,
-    statusIcon,
-    priorityText,
-    priorityIcon,
-  } = generateVisualDataTask(task);
+  const { title, statusText, statusIcon, priorityText, priorityIcon } =
+    generateVisualDataTask(task);
 
   const { colorMode } = useColorMode();
 
   return (
-    <Popover trigger="hover">
-      <PopoverTrigger>
-        <Flex
-          justifyContent="space-between"
-          alignItems="center"
-          border="1px solid"
-          borderTop="none"
-          borderColor={colorMode === "light" ? "#e2e8f0" : "whiteAlpha.300"}
-          px={{ base: "3", md: "6" }}
-          py={{ base: "1", md: "3" }}
+    <Flex
+      maxW="100%"
+      justifyContent="space-between"
+      alignItems="center"
+      border="1px solid"
+      borderTop="none"
+      borderColor={colorMode === "light" ? "#e2e8f0" : "whiteAlpha.300"}
+      px={{ base: "3", sm: "6" }}
+      py={{ base: "1", sm: "3" }}
+    >
+      <Popover trigger="hover" placement="auto">
+        <PopoverTrigger>
+          <Text
+            maxW="75%"
+            whiteSpace="nowrap"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            mr="50px"
+          >
+            {title}
+          </Text>
+        </PopoverTrigger>
+        <PopoverContent
+          w={{ base: "250px", md: "1200px" }}
+          hidden={title.length <= 150}
         >
-          <Text maxW="75%">{shortTitle}</Text>
-          <HStack spacing="50px" ml="10px">
-            <HStack>
-              {task.categories.map((category) => (
-                <Badge
-                  key={category.id}
-                  color={category.color}
-                  bgColor={makeColorTransparent(category.color)}
-                >
-                  {category.name}
-                </Badge>
-              ))}
-            </HStack>
-            <IconText Icon={statusIcon} text={statusText} width="66px" />
-            <IconText Icon={priorityIcon} text={priorityText} width="82px" />
-            <TaskMenu task={task} />
-          </HStack>
+          <PopoverArrow />
+          <PopoverBody>{title}</PopoverBody>
+        </PopoverContent>
+      </Popover>
+      <Flex ml="10px" gap="50px" alignItems="center">
+        <Flex
+          w="200px"
+          wrap="wrap"
+          gap="2"
+          display={{ base: "none", lg: "flex" }}
+        >
+          {task.categories.map((category) => (
+            <Badge
+              key={category.id}
+              color={category.color}
+              bgColor={makeColorTransparent(category.color)}
+              maxW="100%"
+              overflow="clip"
+              h="18px"
+            >
+              {category.name}
+            </Badge>
+          ))}
         </Flex>
-      </PopoverTrigger>
-      <PopoverContent
-        w={{ base: "300px", md: "1200px" }}
-        hidden={title.length <= 150}
-      >
-        <PopoverArrow />
-        <PopoverBody>{title}</PopoverBody>
-      </PopoverContent>
-    </Popover>
+        <IconText Icon={statusIcon} text={statusText} width="66px" />
+        <IconText Icon={priorityIcon} text={priorityText} width="82px" />
+        <TaskMenu task={task} />
+      </Flex>
+    </Flex>
   );
 }
