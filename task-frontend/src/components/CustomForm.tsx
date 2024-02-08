@@ -52,11 +52,13 @@ export function CustomForm({
                     error={errors[field]}
                     isTouched={touched[field]}
                     type={field}
+                    color="white"
                   />
                 ))}
               </Stack>
               <Button
                 type="submit"
+                colorScheme="blue"
                 bgColor="blue.600"
                 _hover={{ bgColor: "blue.500" }}
               >

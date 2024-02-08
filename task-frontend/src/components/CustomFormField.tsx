@@ -17,6 +17,7 @@ interface CustomFormFieldProps {
   padding?: Property.Padding;
   width?: Property.Width;
   cursor?: Property.Cursor;
+  color?: Property.Color;
 }
 
 export function CustomFormField({
@@ -28,12 +29,13 @@ export function CustomFormField({
   padding,
   width,
   cursor,
+  color,
 }: CustomFormFieldProps) {
   const fieldLabel = label ?? capitalize(fieldName);
 
   return (
     <FormControl isInvalid={error !== undefined && isTouched}>
-      <FormLabel htmlFor={fieldName} fontWeight="bold">
+      <FormLabel htmlFor={fieldName} fontWeight="bold" color={color}>
         {fieldLabel}
       </FormLabel>
       <Field
@@ -44,6 +46,7 @@ export function CustomFormField({
         padding={padding}
         width={width}
         cursor={cursor}
+        color={color}
       />
       <FormErrorMessage>{error}</FormErrorMessage>
     </FormControl>
