@@ -61,6 +61,7 @@ export function Task({ task }: TaskProps) {
           wrap="wrap"
           gap="2"
           display={{ base: "none", lg: "flex" }}
+          justifyContent="right"
         >
           {task.categories.map((category) => (
             <Badge
