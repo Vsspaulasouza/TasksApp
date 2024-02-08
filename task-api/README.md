@@ -10,7 +10,7 @@
  
 ## 🧐 Sobre <a name = "about"></a>
  
-Api para gerenciar os usuários, categorias e tasks.
+Api para gerenciar os usuários, categorias e tarefas.
  
 ## ⛏️ Construído usando <a name = "built_using"></a>
  
