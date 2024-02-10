@@ -99,21 +99,33 @@ export async function deleteUser() {
   }
 }
 
-export async function postTask(data: Task) {
-  try {
-    const token = getToken();
-    const result = await instance({
-      method: "post",
-      headers: { Authorization: `Bearer ${token}` },
-      url: "/tasks",
-      data,
-    });
+// export async function postTask(data: Task) {
+//   try {
+//     const token = getToken();
+//     const result = await instance({
+//       method: "post",
+//       headers: { Authorization: `Bearer ${token}` },
+//       url: "/tasks",
+//       data,
+//     });
 
-    return result.data;
-  } catch (error) {
-    if (error instanceof AxiosError) return error.response;
-    throw error;
-  }
+//     return result.data;
+//   } catch (error) {
+//     if (error instanceof AxiosError) return error.response;
+//     throw error;
+//   }
+// }
+
+export async function postTask(data: Task) {
+  const token = getToken();
+  const result = await instance({
+    method: "post",
+    headers: { Authorization: `Bearer ${token}` },
+    url: "/tasks",
+    data,
+  });
+
+  return result.data;
 }
 
 export async function getTasks() {

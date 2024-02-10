@@ -1,12 +1,15 @@
 import { Button, useDisclosure, useToast } from "@chakra-ui/react";
+import { type AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
+import { useMutation, useQueryClient } from "react-query";
 import { TaskForm } from "..";
 import { getCategories, postTask } from "../../api";
 import {
   isCreatedCategoryArray,
   isCustomError,
   type CreatedCategory,
+  type CreatedTask,
   type Task,
 } from "../../types";
 import { showToast } from "../../utils";
@@ -15,20 +18,29 @@ export function CreateTask() {
   const toast = useToast();
 
   const disclosure = useDisclosure();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation<CreatedTask, AxiosError, Task>({
+    mutationKey: "tasks",
+    mutationFn: async (newTask) => {
+      return await postTask(newTask);
+    },
+    onSuccess: () => {
+      disclosure.onClose();
+      showToast(toast, "Task created", "success");
+      void queryClient.invalidateQueries("tasks");
+    },
+  });
 
   const onSubmit = async (task: Task) => {
     if (task.categoriesIds?.length === 0) delete task.categoriesIds;
-
-    const response = await postTask(task);
-
-    if (response != null && isCustomError(response)) {
-      const { message } = response;
-      showToast(toast, message, "error");
-    } else {
-      disclosure.onClose();
-      location.reload();
-    }
+    mutation.mutate(task);
   };
+
+  if (mutation.isError && isCustomError(mutation.error.response?.data)) {
+    const { message } = mutation.error.response.data;
+    showToast(toast, message, "error");
+  }
 
   const initialValues: Task = {
     title: "",
