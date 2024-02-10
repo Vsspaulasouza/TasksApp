@@ -117,19 +117,14 @@ export async function postTask(data: Task) {
 }
 
 export async function getTasks() {
-  try {
-    const token = getToken();
-    const result = await instance({
-      method: "get",
-      headers: { Authorization: `Bearer ${token}` },
-      url: "/tasks",
-    });
+  const token = getToken();
+  const result = await instance({
+    method: "get",
+    headers: { Authorization: `Bearer ${token}` },
+    url: "/tasks",
+  });
 
-    return result.data;
-  } catch (error) {
-    if (error instanceof AxiosError) return error.response;
-    throw error;
-  }
+  return result.data;
 }
 
 export async function deleteTask(taskId: number) {

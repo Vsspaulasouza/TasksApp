@@ -1,10 +1,11 @@
 import { Stack, useToast } from "@chakra-ui/react";
-import { useEffect, useReducer, useState } from "react";
+import { type AxiosError } from "axios";
+import { useReducer } from "react";
+import { useQuery } from "react-query";
 import { TaskListBar } from ".";
 import { NoData } from "..";
 import { getTasks } from "../../api";
 import {
-  isCreatedTaskArray,
   isCustomError,
   type CreatedTask,
   type FilterTasksState,
@@ -24,23 +25,15 @@ interface TasksListProps {
 
 export function TasksList({ filterTasksState }: TasksListProps) {
   const toast = useToast();
+  const { isError, data, error } = useQuery<CreatedTask[], AxiosError>(
+    "tasks",
+    getTasks
+  );
 
-  const [tasks, setTasks] = useState<CreatedTask[]>([]);
-
-  useEffect(() => {
-    const requestTasks = async () => {
-      const response = await getTasks();
-
-      if (response != null && isCustomError(response)) {
-        const { message } = response;
-        showToast(toast, message, "error");
-      } else {
-        if (isCreatedTaskArray(response)) setTasks(response);
-      }
-    };
-
-    void requestTasks();
-  }, []);
+  if (isError && isCustomError(error.response?.data)) {
+    const { message } = error.response.data;
+    showToast(toast, message, "error");
+  }
 
   const orderTasksInitialState: OrderTasksState = {
     title: "initial",
@@ -53,9 +46,10 @@ export function TasksList({ filterTasksState }: TasksListProps) {
     orderTasksInitialState
   );
 
-  if (tasks.length === 0) return <NoData text="No tasks created" />;
+  if (data === undefined || data.length === 0)
+    return <NoData text="No tasks created" />;
 
-  let filteredOrderedTasks = filterTasks(tasks, filterTasksState);
+  let filteredOrderedTasks = filterTasks(data, filterTasksState);
   filteredOrderedTasks = orderTasks(filteredOrderedTasks, orderTasksState);
 
   return (
