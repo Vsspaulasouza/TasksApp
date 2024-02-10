@@ -16,31 +16,33 @@ import { showToast } from "../../utils";
 
 export function CreateTask() {
   const toast = useToast();
-
   const disclosure = useDisclosure();
   const queryClient = useQueryClient();
 
-  const mutation = useMutation<CreatedTask, AxiosError, Task>({
+  const { mutate } = useMutation<CreatedTask, AxiosError, Task>({
     mutationKey: "tasks",
     mutationFn: async (newTask) => {
       return await postTask(newTask);
     },
-    onSuccess: () => {
+    onSuccess: (newTask) => {
       disclosure.onClose();
       showToast(toast, "Task created", "success");
-      void queryClient.invalidateQueries("tasks");
+      void queryClient.setQueryData<CreatedTask[]>("tasks", (data) => {
+        return data === undefined ? [newTask] : [...data, newTask];
+      });
+    },
+    onError: (error) => {
+      if (isCustomError(error.response?.data)) {
+        const { message } = error.response.data;
+        showToast(toast, message, "error");
+      }
     },
   });
 
   const onSubmit = async (task: Task) => {
     if (task.categoriesIds?.length === 0) delete task.categoriesIds;
-    mutation.mutate(task);
+    mutate(task);
   };
-
-  if (mutation.isError && isCustomError(mutation.error.response?.data)) {
-    const { message } = mutation.error.response.data;
-    showToast(toast, message, "error");
-  }
 
   const initialValues: Task = {
     title: "",

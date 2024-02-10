@@ -7,8 +7,10 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { type AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { IoEllipsisVertical } from "react-icons/io5";
+import { useMutation, useQueryClient } from "react-query";
 import { ModalDelete, TaskForm } from "..";
 import { deleteTask, getCategories, updateTask } from "../../api";
 import {
@@ -27,21 +29,30 @@ interface TaskMenuProps {
 
 export function TaskMenu({ task }: TaskMenuProps) {
   const toast = useToast();
+  const queryClient = useQueryClient();
 
   const editDisclosure = useDisclosure();
-  const handleEdit = async (editData: EditTask) => {
-    const response = await updateTask(task.id, editData);
-
-    if (response != null && isCustomError(response)) {
-      const { message } = response;
-      showToast(toast, message, "error");
-    } else {
+  const editMutation = useMutation<CreatedTask, AxiosError, EditTask>({
+    mutationKey: "tasks",
+    mutationFn: async (editData) => {
+      return await updateTask(task.id, editData);
+    },
+    onSuccess: () => {
       editDisclosure.onClose();
-      location.reload();
-    }
-  };
+      showToast(toast, "Task edited", "success");
+      void queryClient.invalidateQueries("tasks");
+    },
+    onError: (error) => {
+      if (isCustomError(error.response?.data)) {
+        const { message } = error.response.data;
+        showToast(toast, message, "error");
+      }
+    },
+  });
 
-  const deleteDisclosure = useDisclosure();
+  const handleEdit = async (editData: EditTask) => {
+    editMutation.mutate(editData);
+  };
 
   const categoriesIds = task?.categories.map((category) => category.id);
   const editInitialValues: TaskType = {
@@ -51,17 +62,27 @@ export function TaskMenu({ task }: TaskMenuProps) {
     categoriesIds,
   };
 
-  const handleDelete = async () => {
-    const response = await deleteTask(task.id);
-
-    if (response != null && isCustomError(response)) {
-      const { message } = response;
-      showToast(toast, message, "error");
-    } else {
-      showToast(toast, "Task deleted", "success");
+  const deleteDisclosure = useDisclosure();
+  const deleteMutation = useMutation<CreatedTask, AxiosError>({
+    mutationKey: "tasks",
+    mutationFn: async () => {
+      return await deleteTask(task.id);
+    },
+    onSuccess: () => {
       deleteDisclosure.onClose();
-      location.reload();
-    }
+      showToast(toast, "Task deleted", "success");
+      void queryClient.invalidateQueries("tasks");
+    },
+    onError: (error) => {
+      if (isCustomError(error.response?.data)) {
+        const { message } = error.response.data;
+        showToast(toast, message, "error");
+      }
+    },
+  });
+
+  const handleDelete = async () => {
+    deleteMutation.mutate();
   };
 
   const [categories, setCategories] = useState<CreatedCategory[]>([]);

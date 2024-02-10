@@ -41,7 +41,7 @@ export function isCustomError(value: unknown): value is CustomError {
     value !== null &&
     typeof value === "object" &&
     "message" in value &&
-    typeof value.message === "string" &&
+    (typeof value.message === "string" || value.message instanceof Array) &&
     "statusCode" in value &&
     typeof value.statusCode === "number"
   );

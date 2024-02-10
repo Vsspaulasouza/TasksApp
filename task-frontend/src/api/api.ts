@@ -99,28 +99,11 @@ export async function deleteUser() {
   }
 }
 
-// export async function postTask(data: Task) {
-//   try {
-//     const token = getToken();
-//     const result = await instance({
-//       method: "post",
-//       headers: { Authorization: `Bearer ${token}` },
-//       url: "/tasks",
-//       data,
-//     });
-
-//     return result.data;
-//   } catch (error) {
-//     if (error instanceof AxiosError) return error.response;
-//     throw error;
-//   }
-// }
-
 export async function postTask(data: Task) {
   const token = getToken();
   const result = await instance({
     method: "post",
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${token + "aa"}` },
     url: "/tasks",
     data,
   });
@@ -140,36 +123,26 @@ export async function getTasks() {
 }
 
 export async function deleteTask(taskId: number) {
-  try {
-    const token = getToken();
-    const result = await instance({
-      method: "delete",
-      headers: { Authorization: `Bearer ${token}` },
-      url: `/tasks/${taskId}`,
-    });
+  const token = getToken();
+  const result = await instance({
+    method: "delete",
+    headers: { Authorization: `Bearer ${token}` },
+    url: `/tasks/${taskId}`,
+  });
 
-    return result.data;
-  } catch (error) {
-    if (error instanceof AxiosError) return error.response;
-    throw error;
-  }
+  return result.data;
 }
 
 export async function updateTask(taskId: number, data: EditTask) {
-  try {
-    const token = getToken();
-    const result = await instance({
-      method: "patch",
-      headers: { Authorization: `Bearer ${token}` },
-      url: `/tasks/${taskId}`,
-      data,
-    });
+  const token = getToken();
+  const result = await instance({
+    method: "patch",
+    headers: { Authorization: `Bearer ${token}` },
+    url: `/tasks/${taskId}`,
+    data,
+  });
 
-    return result.data;
-  } catch (error) {
-    if (error instanceof AxiosError) return error.response;
-    throw error;
-  }
+  return result.data;
 }
 
 export async function postCategory(data: Category) {
