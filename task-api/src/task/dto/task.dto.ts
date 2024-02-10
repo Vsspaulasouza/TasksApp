@@ -46,7 +46,6 @@ export class UpdateTaskDto {
 
   @IsOptional()
   @IsArray()
-  @ArrayNotEmpty()
   @IsNumber({}, { each: true })
   categoriesIds?: number[];
 }
