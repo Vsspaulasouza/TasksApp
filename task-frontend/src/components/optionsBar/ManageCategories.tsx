@@ -9,15 +9,13 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { type AxiosError } from "axios";
+import { useRef } from "react";
 import { IoPricetagOutline } from "react-icons/io5";
+import { useQuery } from "react-query";
 import { NoData } from "..";
 import { getCategories } from "../../api";
-import {
-  isCreatedCategoryArray,
-  isCustomError,
-  type CreatedCategory,
-} from "../../types";
+import { isCustomError, type CreatedCategory } from "../../types";
 import { showToast } from "../../utils";
 import { CategoriesRender } from "./CategoriesRender";
 import { CreateCategory } from "./CreateCategory";
@@ -27,22 +25,16 @@ export function ManageCategories() {
   const btnRef = useRef(null);
   const drawerDisclosure = useDisclosure();
 
-  const [categories, setCategories] = useState<CreatedCategory[]>([]);
-
-  useEffect(() => {
-    const requestCategories = async () => {
-      const response = await getCategories();
-
-      if (response != null && isCustomError(response)) {
-        const { message } = response;
+  const { data } = useQuery<CreatedCategory[], AxiosError>({
+    queryKey: "categories",
+    queryFn: getCategories,
+    onError: (error) => {
+      if (isCustomError(error.response?.data)) {
+        const { message } = error.response.data;
         showToast(toast, message, "error");
-      } else {
-        if (isCreatedCategoryArray(response)) setCategories(response);
       }
-    };
-
-    void requestCategories();
-  }, []);
+    },
+  });
 
   return (
     <>
@@ -67,10 +59,10 @@ export function ManageCategories() {
 
           <DrawerBody>
             <CreateCategory />
-            {categories.length === 0 ? (
+            {data === undefined || data.length === 0 ? (
               <NoData text="No categories created" />
             ) : (
-              <CategoriesRender categories={categories} />
+              <CategoriesRender categories={data} />
             )}
           </DrawerBody>
         </DrawerContent>

@@ -1,24 +1,43 @@
 import { Button, useDisclosure, useToast } from "@chakra-ui/react";
+import { type AxiosError } from "axios";
 import { IoAddOutline } from "react-icons/io5";
+import { useMutation, useQueryClient } from "react-query";
 import { CategoryForm } from "..";
 import { postCategory } from "../../api";
-import { isCustomError, type Category } from "../../types";
+import {
+  isCustomError,
+  type Category,
+  type CreatedCategory,
+} from "../../types";
 import { showToast } from "../../utils";
 
 export function CreateCategory() {
   const toast = useToast();
   const disclosure = useDisclosure();
+  const queryClient = useQueryClient();
 
-  const handleCreate = async (category: Category) => {
-    const response = await postCategory(category);
-
-    if (response != null && isCustomError(response)) {
-      const { message } = response;
-      showToast(toast, message, "error");
-    } else {
+  const { mutate } = useMutation<CreatedCategory, AxiosError, Category>({
+    mutationKey: "categories",
+    mutationFn: async (newCategory) => {
+      return await postCategory(newCategory);
+    },
+    onSuccess: (newCategory) => {
       disclosure.onClose();
-      location.reload();
-    }
+      showToast(toast, "Category created", "success");
+      void queryClient.setQueryData<CreatedCategory[]>("categories", (data) => {
+        return data === undefined ? [newCategory] : [...data, newCategory];
+      });
+    },
+    onError: (error) => {
+      if (isCustomError(error.response?.data)) {
+        const { message } = error.response.data;
+        showToast(toast, message, "error");
+      }
+    },
+  });
+
+  const onSubmit = async (category: Category) => {
+    mutate(category);
   };
 
   const initialValues: Category = {
@@ -37,7 +56,7 @@ export function CreateCategory() {
       </Button>
       <CategoryForm
         disclosure={disclosure}
-        onSubmit={handleCreate}
+        onSubmit={onSubmit}
         initialValues={initialValues}
         textButton="Create"
         title="Create your category"

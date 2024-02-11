@@ -7,7 +7,9 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { type AxiosError } from "axios";
 import { IoEllipsisVertical } from "react-icons/io5";
+import { useMutation, useQueryClient } from "react-query";
 import { CategoryForm, ModalDelete } from "..";
 import { deleteCategory, updateCategory } from "../../api";
 import {
@@ -24,37 +26,57 @@ interface CategoriesMenuProps {
 
 export function CategoriesMenu({ category }: CategoriesMenuProps) {
   const toast = useToast();
+  const queryClient = useQueryClient();
 
   const editDisclosure = useDisclosure();
-  const handleEdit = async (editData: EditCategory) => {
-    const response = await updateCategory(category.id, editData);
-
-    if (response != null && isCustomError(response)) {
-      const { message } = response;
-      showToast(toast, message, "error");
-    } else {
+  const editMutation = useMutation<CreatedCategory, AxiosError, EditCategory>({
+    mutationKey: "categories",
+    mutationFn: async (editData) => {
+      return await updateCategory(category.id, editData);
+    },
+    onSuccess: () => {
       editDisclosure.onClose();
-      location.reload();
-    }
+      showToast(toast, "Category edited", "success");
+      void queryClient.invalidateQueries("categories");
+    },
+    onError: (error) => {
+      if (isCustomError(error.response?.data)) {
+        const { message } = error.response.data;
+        showToast(toast, message, "error");
+      }
+    },
+  });
+
+  const handleEdit = async (editData: EditCategory) => {
+    editMutation.mutate(editData);
   };
 
-  const deleteDisclosure = useDisclosure();
   const editInitialValues: Category = {
     name: category.name,
     color: category.color,
   };
 
-  const handleDelete = async () => {
-    const response = await deleteCategory(category.id);
-
-    if (response != null && isCustomError(response)) {
-      const { message } = response;
-      showToast(toast, message, "error");
-    } else {
-      showToast(toast, "Category deleted", "success");
+  const deleteDisclosure = useDisclosure();
+  const deleteMutation = useMutation<CreatedCategory, AxiosError>({
+    mutationKey: "categories",
+    mutationFn: async () => {
+      return await deleteCategory(category.id);
+    },
+    onSuccess: () => {
       deleteDisclosure.onClose();
-      location.reload();
-    }
+      showToast(toast, "Category deleted", "success");
+      void queryClient.invalidateQueries("categories");
+    },
+    onError: (error) => {
+      if (isCustomError(error.response?.data)) {
+        const { message } = error.response.data;
+        showToast(toast, message, "error");
+      }
+    },
+  });
+
+  const handleDelete = async () => {
+    deleteMutation.mutate();
   };
 
   return (

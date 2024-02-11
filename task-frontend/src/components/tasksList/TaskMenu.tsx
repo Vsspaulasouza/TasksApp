@@ -8,13 +8,11 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { type AxiosError } from "axios";
-import { useEffect, useState } from "react";
 import { IoEllipsisVertical } from "react-icons/io5";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ModalDelete, TaskForm } from "..";
 import { deleteTask, getCategories, updateTask } from "../../api";
 import {
-  isCreatedCategoryArray,
   isCustomError,
   type CreatedCategory,
   type CreatedTask,
@@ -85,22 +83,16 @@ export function TaskMenu({ task }: TaskMenuProps) {
     deleteMutation.mutate();
   };
 
-  const [categories, setCategories] = useState<CreatedCategory[]>([]);
-
-  useEffect(() => {
-    const requestCategories = async () => {
-      const response = await getCategories();
-
-      if (response != null && isCustomError(response)) {
-        const { message } = response;
+  const categoriesQuery = useQuery<CreatedCategory[], AxiosError>({
+    queryKey: "categories",
+    queryFn: getCategories,
+    onError: (error) => {
+      if (isCustomError(error.response?.data)) {
+        const { message } = error.response.data;
         showToast(toast, message, "error");
-      } else {
-        if (isCreatedCategoryArray(response)) setCategories(response);
       }
-    };
-
-    void requestCategories();
-  }, []);
+    },
+  });
 
   return (
     <Menu>
@@ -121,7 +113,7 @@ export function TaskMenu({ task }: TaskMenuProps) {
         initialValues={editInitialValues}
         onSubmit={handleEdit}
         textButton="Edit"
-        categories={categories}
+        categories={categoriesQuery.data ?? []}
         title="Edit task"
       />
 
