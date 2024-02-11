@@ -103,7 +103,7 @@ export async function postTask(data: Task) {
   const token = getToken();
   const result = await instance({
     method: "post",
-    headers: { Authorization: `Bearer ${token + "aa"}` },
+    headers: { Authorization: `Bearer ${token}` },
     url: "/tasks",
     data,
   });

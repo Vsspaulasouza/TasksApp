@@ -25,15 +25,16 @@ interface TasksListProps {
 
 export function TasksList({ filterTasksState }: TasksListProps) {
   const toast = useToast();
-  const { isError, data, error } = useQuery<CreatedTask[], AxiosError>(
-    "tasks",
-    getTasks
-  );
-
-  if (isError && isCustomError(error.response?.data)) {
-    const { message } = error.response.data;
-    showToast(toast, message, "error");
-  }
+  const { data } = useQuery<CreatedTask[], AxiosError>({
+    queryKey: "tasks",
+    queryFn: getTasks,
+    onError: (error) => {
+      if (isCustomError(error.response?.data)) {
+        const { message } = error.response.data;
+        showToast(toast, message, "error");
+      }
+    },
+  });
 
   const orderTasksInitialState: OrderTasksState = {
     title: "initial",
