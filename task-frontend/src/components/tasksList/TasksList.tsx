@@ -4,7 +4,7 @@ import { useReducer } from "react";
 import { useQuery } from "react-query";
 import { TaskListBar } from ".";
 import { NoData } from "..";
-import { getTasks } from "../../api";
+import { requestApi } from "../../api";
 import {
   isCustomError,
   type CreatedTask,
@@ -27,7 +27,9 @@ export function TasksList({ filterTasksState }: TasksListProps) {
   const toast = useToast();
   const { data } = useQuery<CreatedTask[], AxiosError>({
     queryKey: "tasks",
-    queryFn: getTasks,
+    queryFn: async () => {
+      return await requestApi({ urlPath: "tasks" });
+    },
     onError: (error) => {
       if (isCustomError(error.response?.data)) {
         const { message } = error.response.data;

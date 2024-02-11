@@ -6,12 +6,7 @@ import {
   type User,
 } from "../types";
 import { getToken } from "../utils";
-import {
-  type Category,
-  type EditCategory,
-  type EditTask,
-  type Task,
-} from "./../types/types";
+import { type RequestApiAttributes } from "./../types/types";
 
 const instance = axios.create({
   baseURL: "http://localhost:3000",
@@ -99,92 +94,17 @@ export async function deleteUser() {
   }
 }
 
-export async function postTask(data: Task) {
+export async function requestApi<T>({
+  method = "get",
+  urlPath,
+  id,
+  data,
+}: RequestApiAttributes<T>) {
   const token = getToken();
   const result = await instance({
-    method: "post",
+    method,
     headers: { Authorization: `Bearer ${token}` },
-    url: "/tasks",
-    data,
-  });
-
-  return result.data;
-}
-
-export async function getTasks() {
-  const token = getToken();
-  const result = await instance({
-    method: "get",
-    headers: { Authorization: `Bearer ${token}` },
-    url: "/tasks",
-  });
-
-  return result.data;
-}
-
-export async function deleteTask(taskId: number) {
-  const token = getToken();
-  const result = await instance({
-    method: "delete",
-    headers: { Authorization: `Bearer ${token}` },
-    url: `/tasks/${taskId}`,
-  });
-
-  return result.data;
-}
-
-export async function updateTask(taskId: number, data: EditTask) {
-  const token = getToken();
-  const result = await instance({
-    method: "patch",
-    headers: { Authorization: `Bearer ${token}` },
-    url: `/tasks/${taskId}`,
-    data,
-  });
-
-  return result.data;
-}
-
-export async function postCategory(data: Category) {
-  const token = getToken();
-  const result = await instance({
-    method: "post",
-    headers: { Authorization: `Bearer ${token}` },
-    url: "/categories",
-    data,
-  });
-
-  return result.data;
-}
-
-export async function getCategories() {
-  const token = getToken();
-  const result = await instance({
-    method: "get",
-    headers: { Authorization: `Bearer ${token}` },
-    url: "/categories",
-  });
-
-  return result.data;
-}
-
-export async function deleteCategory(categoryId: number) {
-  const token = getToken();
-  const result = await instance({
-    method: "delete",
-    headers: { Authorization: `Bearer ${token}` },
-    url: `/categories/${categoryId}`,
-  });
-
-  return result.data;
-}
-
-export async function updateCategory(categoryId: number, data: EditCategory) {
-  const token = getToken();
-  const result = await instance({
-    method: "patch",
-    headers: { Authorization: `Bearer ${token}` },
-    url: `/categories/${categoryId}`,
+    url: `/${urlPath}/${id ?? ""}`,
     data,
   });
 

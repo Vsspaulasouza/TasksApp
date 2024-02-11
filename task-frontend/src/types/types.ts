@@ -1,3 +1,5 @@
+import { type Method } from "axios";
+
 export interface User {
   name: string;
   username: string;
@@ -71,4 +73,11 @@ export interface OrderTasksState {
   title: Order;
   status: Order;
   priority: Order;
+}
+
+export interface RequestApiAttributes<T> {
+  method?: Method;
+  urlPath: string;
+  id?: number;
+  data?: T;
 }

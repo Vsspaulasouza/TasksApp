@@ -3,7 +3,7 @@ import { type AxiosError } from "axios";
 import { IoAddOutline } from "react-icons/io5";
 import { useMutation, useQueryClient } from "react-query";
 import { CategoryForm } from "..";
-import { postCategory } from "../../api";
+import { requestApi } from "../../api";
 import {
   isCustomError,
   type Category,
@@ -18,8 +18,8 @@ export function CreateCategory() {
 
   const { mutate } = useMutation<CreatedCategory, AxiosError, Category>({
     mutationKey: "categories",
-    mutationFn: async (newCategory) => {
-      return await postCategory(newCategory);
+    mutationFn: async (data) => {
+      return await requestApi({ method: "post", urlPath: "categories", data });
     },
     onSuccess: (newCategory) => {
       disclosure.onClose();

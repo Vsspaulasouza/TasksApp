@@ -3,7 +3,7 @@ import { type AxiosError } from "axios";
 import { IoAddOutline } from "react-icons/io5";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { TaskForm } from "..";
-import { getCategories, postTask } from "../../api";
+import { requestApi } from "../../api";
 import {
   isCustomError,
   type CreatedCategory,
@@ -19,8 +19,8 @@ export function CreateTask() {
 
   const { mutate } = useMutation<CreatedTask, AxiosError, Task>({
     mutationKey: "tasks",
-    mutationFn: async (newTask) => {
-      return await postTask(newTask);
+    mutationFn: async (data) => {
+      return await requestApi({ method: "post", urlPath: "tasks", data });
     },
     onSuccess: (newTask) => {
       disclosure.onClose();
@@ -51,7 +51,9 @@ export function CreateTask() {
 
   const categoriesQuery = useQuery<CreatedCategory[], AxiosError>({
     queryKey: "categories",
-    queryFn: getCategories,
+    queryFn: async () => {
+      return await requestApi({ urlPath: "categories" });
+    },
     onError: (error) => {
       if (isCustomError(error.response?.data)) {
         const { message } = error.response.data;

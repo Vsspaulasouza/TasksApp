@@ -11,7 +11,7 @@ import { type AxiosError } from "axios";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ModalDelete, TaskForm } from "..";
-import { deleteTask, getCategories, updateTask } from "../../api";
+import { requestApi } from "../../api";
 import {
   isCustomError,
   type CreatedCategory,
@@ -33,7 +33,12 @@ export function TaskMenu({ task }: TaskMenuProps) {
   const editMutation = useMutation<CreatedTask, AxiosError, EditTask>({
     mutationKey: "tasks",
     mutationFn: async (editData) => {
-      return await updateTask(task.id, editData);
+      return await requestApi({
+        method: "patch",
+        urlPath: "tasks",
+        id: task.id,
+        data: editData,
+      });
     },
     onSuccess: () => {
       editDisclosure.onClose();
@@ -64,7 +69,11 @@ export function TaskMenu({ task }: TaskMenuProps) {
   const deleteMutation = useMutation<CreatedTask, AxiosError>({
     mutationKey: "tasks",
     mutationFn: async () => {
-      return await deleteTask(task.id);
+      return await requestApi({
+        method: "delete",
+        urlPath: "tasks",
+        id: task.id,
+      });
     },
     onSuccess: () => {
       deleteDisclosure.onClose();
@@ -85,7 +94,9 @@ export function TaskMenu({ task }: TaskMenuProps) {
 
   const categoriesQuery = useQuery<CreatedCategory[], AxiosError>({
     queryKey: "categories",
-    queryFn: getCategories,
+    queryFn: async () => {
+      return await requestApi({ urlPath: "categories" });
+    },
     onError: (error) => {
       if (isCustomError(error.response?.data)) {
         const { message } = error.response.data;

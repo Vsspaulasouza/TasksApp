@@ -11,7 +11,7 @@ import { type AxiosError } from "axios";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { useMutation, useQueryClient } from "react-query";
 import { CategoryForm, ModalDelete } from "..";
-import { deleteCategory, updateCategory } from "../../api";
+import { requestApi } from "../../api";
 import {
   isCustomError,
   type Category,
@@ -31,8 +31,13 @@ export function CategoriesMenu({ category }: CategoriesMenuProps) {
   const editDisclosure = useDisclosure();
   const editMutation = useMutation<CreatedCategory, AxiosError, EditCategory>({
     mutationKey: "categories",
-    mutationFn: async (editData) => {
-      return await updateCategory(category.id, editData);
+    mutationFn: async (data) => {
+      return await requestApi({
+        method: "patch",
+        urlPath: "categories",
+        id: category.id,
+        data,
+      });
     },
     onSuccess: () => {
       editDisclosure.onClose();
@@ -60,7 +65,11 @@ export function CategoriesMenu({ category }: CategoriesMenuProps) {
   const deleteMutation = useMutation<CreatedCategory, AxiosError>({
     mutationKey: "categories",
     mutationFn: async () => {
-      return await deleteCategory(category.id);
+      return await requestApi({
+        method: "delete",
+        urlPath: "categories",
+        id: category.id,
+      });
     },
     onSuccess: () => {
       deleteDisclosure.onClose();

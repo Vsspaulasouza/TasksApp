@@ -14,7 +14,7 @@ import { useRef } from "react";
 import { IoPricetagOutline } from "react-icons/io5";
 import { useQuery } from "react-query";
 import { NoData } from "..";
-import { getCategories } from "../../api";
+import { requestApi } from "../../api";
 import { isCustomError, type CreatedCategory } from "../../types";
 import { showToast } from "../../utils";
 import { CategoriesRender } from "./CategoriesRender";
@@ -27,7 +27,9 @@ export function ManageCategories() {
 
   const { data } = useQuery<CreatedCategory[], AxiosError>({
     queryKey: "categories",
-    queryFn: getCategories,
+    queryFn: async () => {
+      return await requestApi({ urlPath: "categories" });
+    },
     onError: (error) => {
       if (isCustomError(error.response?.data)) {
         const { message } = error.response.data;
