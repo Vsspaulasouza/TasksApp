@@ -44,13 +44,18 @@ export function Home() {
     },
   });
 
+  if (data === undefined) {
+    navigate("/auth/login");
+    return null;
+  }
+
   return (
     <Container
       maxW="100%"
       py={{ base: "6", md: "20" }}
       px={{ base: "3", sm: "10", md: "15", lg: "20" }}
     >
-      <HeaderHome user={data ?? null} />
+      <HeaderHome user={data} />
       <OptionsBar filterTasksDispatch={filterTasksDispatch} />
       <TasksList filterTasksState={filterTasksState} />
     </Container>
