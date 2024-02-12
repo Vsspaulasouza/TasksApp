@@ -1,13 +1,16 @@
 import { useDisclosure, useToast } from "@chakra-ui/react";
+import { type AxiosError } from "axios";
 import { IoLockClosed } from "react-icons/io5";
-import { updateAuth } from "../../api";
-import { isCustomError, type EditAuth } from "../../types";
+import { useMutation, useQueryClient } from "react-query";
+import { requestApi } from "../../api";
+import { isCustomError, type CreatedUser, type EditAuth } from "../../types";
 import { showToast } from "../../utils";
 import { editAuthValidation } from "../../validations";
 import { ItemUserMenu } from "./ItemUserMenu";
 
 export function EditCredentials() {
   const toast = useToast();
+  const queryClient = useQueryClient();
 
   const editAuthDisclosure = useDisclosure();
 
@@ -16,19 +19,33 @@ export function EditCredentials() {
     password: "",
   };
 
-  const onSubmitEditAuth = async (values: EditAuth) => {
-    if (values.username === "") delete values.username;
-    if (values.password === "") delete values.password;
-    const response = await updateAuth(values);
-
-    if (response != null && isCustomError(response)) {
-      const { message } = response;
-      showToast(toast, message, "error");
-    } else {
-      showToast(toast, "Credentials updated", "success");
+  const { mutate } = useMutation<CreatedUser, AxiosError, EditAuth>({
+    mutationKey: "user",
+    mutationFn: async (data) => {
+      return await requestApi({
+        method: "patch",
+        urlPath: "auth/me",
+        data,
+      });
+    },
+    onSuccess: () => {
       editAuthDisclosure.onClose();
-      location.reload();
-    }
+      showToast(toast, "Credentials updated", "success");
+      void queryClient.invalidateQueries("user");
+    },
+    onError: (error) => {
+      if (isCustomError(error.response?.data)) {
+        const { message } = error.response.data;
+        showToast(toast, message, "error");
+      }
+    },
+  });
+
+  const onSubmitEditAuth = async (editData: EditAuth) => {
+    if (editData.username === "") delete editData.username;
+    if (editData.password === "") delete editData.password;
+
+    mutate(editData);
   };
 
   return (

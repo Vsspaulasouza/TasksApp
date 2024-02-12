@@ -1,12 +1,13 @@
 import { Container, useToast } from "@chakra-ui/react";
-import { useEffect, useReducer, useState } from "react";
+import { type AxiosError } from "axios";
+import { useReducer } from "react";
+import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { getUser } from "../api";
+import { requestApi } from "../api";
 import { HeaderHome } from "../components";
 import { OptionsBar } from "../components/optionsBar";
 import { TasksList } from "../components/tasksList";
 import {
-  isCreatedUser,
   isCustomError,
   type CreatedUser,
   type FilterTasksState,
@@ -16,7 +17,6 @@ import { filterTasksReducer, showToast } from "../utils";
 export function Home() {
   const toast = useToast();
   const navigate = useNavigate();
-  const [user, setUser] = useState<CreatedUser | null>(null);
 
   const filterTasksInitialState: FilterTasksState = {
     TODO: false,
@@ -31,20 +31,18 @@ export function Home() {
     filterTasksInitialState
   );
 
-  useEffect(() => {
-    const requestUser = async () => {
-      const response = await getUser();
-
-      if (response != null && isCustomError(response.data)) {
+  const { data } = useQuery<CreatedUser, AxiosError>({
+    queryKey: "user",
+    queryFn: async () => {
+      return await requestApi({ urlPath: "users/me" });
+    },
+    onError: (error) => {
+      if (isCustomError(error.response?.data)) {
         showToast(toast, "Please log in to your account", "info");
         navigate("/auth/login");
       }
-
-      if (isCreatedUser(response)) setUser(response);
-    };
-
-    void requestUser();
-  }, []);
+    },
+  });
 
   return (
     <Container
@@ -52,7 +50,7 @@ export function Home() {
       py={{ base: "6", md: "20" }}
       px={{ base: "3", sm: "10", md: "15", lg: "20" }}
     >
-      <HeaderHome user={user} />
+      <HeaderHome user={data ?? null} />
       <OptionsBar filterTasksDispatch={filterTasksDispatch} />
       <TasksList filterTasksState={filterTasksState} />
     </Container>
