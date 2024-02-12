@@ -12,7 +12,7 @@ import {
   type CreatedUser,
   type FilterTasksState,
 } from "../types";
-import { filterTasksReducer, showToast } from "../utils";
+import { FIFTEEN_MINUTES, filterTasksReducer, showToast } from "../utils";
 
 export function Home() {
   const toast = useToast();
@@ -42,12 +42,8 @@ export function Home() {
         navigate("/auth/login");
       }
     },
+    refetchInterval: FIFTEEN_MINUTES,
   });
-
-  if (data === undefined) {
-    navigate("/auth/login");
-    return null;
-  }
 
   return (
     <Container
@@ -55,7 +51,7 @@ export function Home() {
       py={{ base: "6", md: "20" }}
       px={{ base: "3", sm: "10", md: "15", lg: "20" }}
     >
-      <HeaderHome user={data} />
+      <HeaderHome user={data ?? null} />
       <OptionsBar filterTasksDispatch={filterTasksDispatch} />
       <TasksList filterTasksState={filterTasksState} />
     </Container>
