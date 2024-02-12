@@ -1,6 +1,6 @@
 import { Stack, useToast } from "@chakra-ui/react";
 import { type AxiosError } from "axios";
-import { useReducer } from "react";
+import { useMemo, useReducer } from "react";
 import { useQuery } from "react-query";
 import { TaskListBar } from ".";
 import { NoData } from "..";
@@ -48,12 +48,18 @@ export function TasksList({ filterTasksState }: TasksListProps) {
     orderTasksReducer,
     orderTasksInitialState
   );
+  const filteredTasks = useMemo(
+    () => filterTasks(data ?? [], filterTasksState),
+    [data, filterTasksState]
+  );
+
+  const orderedTasks = useMemo(
+    () => orderTasks(filteredTasks, orderTasksState),
+    [filteredTasks, orderTasksState]
+  );
 
   if (data === undefined || data.length === 0)
     return <NoData text="No tasks created" />;
-
-  let filteredOrderedTasks = filterTasks(data, filterTasksState);
-  filteredOrderedTasks = orderTasks(filteredOrderedTasks, orderTasksState);
 
   return (
     <>
@@ -62,7 +68,7 @@ export function TasksList({ filterTasksState }: TasksListProps) {
         orderTasksDispatch={orderTasksDispatch}
       />
       <Stack spacing="0">
-        {filteredOrderedTasks.map((task) => (
+        {orderedTasks.map((task) => (
           <Task key={task.id} task={task} />
         ))}
       </Stack>
