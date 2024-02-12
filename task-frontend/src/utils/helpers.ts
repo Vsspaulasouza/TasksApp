@@ -7,6 +7,7 @@ import {
   IoEllipseOutline,
   IoStopwatchOutline,
 } from "react-icons/io5";
+import { formatCapitalizeLower } from ".";
 import {
   isOrderAtribute,
   type CreatedTask,
@@ -19,14 +20,7 @@ import {
   type OrderTasksState,
   type Priority,
   type Status,
-} from "./../types/types";
-export function capitalize(text: string) {
-  return text[0].toUpperCase() + text.slice(1);
-}
-
-export function formatCapitalizeLower(text: string) {
-  return text[0].toUpperCase() + text.slice(1).toLowerCase();
-}
+} from "../types/types";
 
 export function showToast(
   toast: CreateToastFnReturn,
@@ -72,10 +66,6 @@ export function generateVisualDataTask(task: CreatedTask) {
     statusIcon: statusIconMap[status],
     priorityIcon: priorityIconMap[priority],
   };
-}
-
-export function makeColorTransparent(color: string) {
-  return color + "26";
 }
 
 export function filterTasksReducer(
