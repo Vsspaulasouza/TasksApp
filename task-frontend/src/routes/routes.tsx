@@ -4,6 +4,10 @@ import { Home, Login, Signup } from "../pages";
 export const router = createBrowserRouter([
   {
     path: "/",
+    element: <Login />,
+  },
+  {
+    path: "home",
     element: <Home />,
   },
   {

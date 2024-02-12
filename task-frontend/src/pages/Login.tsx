@@ -30,7 +30,7 @@ export function Login() {
       const { message } = response.data;
       showToast(toast, message, "error");
     } else {
-      navigate("/");
+      navigate("/home");
     }
   };
 
@@ -49,7 +49,7 @@ export function Login() {
             </Heading>
             <Text color="GrayText">
               Don&apos;t have an account?{" "}
-              <Link as={RouterLink} to="../signup" color="teal">
+              <Link as={RouterLink} to="auth/signup" color="teal">
                 Sign up
               </Link>
             </Text>

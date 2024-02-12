@@ -31,7 +31,7 @@ export function Signup() {
       const { message } = response.data;
       showToast(toast, message, "error");
     } else {
-      navigate("/");
+      navigate("/home");
     }
   };
 
