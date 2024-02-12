@@ -1,13 +1,21 @@
 import { useDisclosure, useToast } from "@chakra-ui/react";
+import { type AxiosError } from "axios";
 import { IoPerson } from "react-icons/io5";
-import { updateName } from "../../api";
-import { isCustomError, type NameUser } from "../../types";
+import { useMutation, useQueryClient } from "react-query";
+import { requestApi } from "../../api";
+import {
+  isCustomError,
+  type CreatedUser,
+  type EditNameUser,
+  type NameUser,
+} from "../../types";
 import { showToast } from "../../utils";
 import { editNameValidation } from "../../validations";
 import { ItemUserMenu } from "./ItemUserMenu";
 
 export function EditUserInfo() {
   const toast = useToast();
+  const queryClient = useQueryClient();
 
   const editNameDisclosure = useDisclosure();
 
@@ -15,17 +23,30 @@ export function EditUserInfo() {
     name: "",
   };
 
-  const onSubmitEditName = async (values: NameUser) => {
-    const response = await updateName(values);
-
-    if (response != null && isCustomError(response)) {
-      const { message } = response;
-      showToast(toast, message, "error");
-    } else {
-      showToast(toast, "User info updated", "success");
+  const { mutate } = useMutation<CreatedUser, AxiosError, EditNameUser>({
+    mutationKey: "user",
+    mutationFn: async (data) => {
+      return await requestApi({
+        method: "patch",
+        urlPath: "users/me",
+        data,
+      });
+    },
+    onSuccess: () => {
       editNameDisclosure.onClose();
-      location.reload();
-    }
+      showToast(toast, "User name updated", "success");
+      void queryClient.invalidateQueries("user");
+    },
+    onError: (error) => {
+      if (isCustomError(error.response?.data)) {
+        const { message } = error.response.data;
+        showToast(toast, message, "error");
+      }
+    },
+  });
+
+  const onSubmitEditName = async (editData: NameUser) => {
+    mutate(editData);
   };
 
   return (

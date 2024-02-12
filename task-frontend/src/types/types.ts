@@ -11,6 +11,7 @@ export type NameUser = Pick<User, "name">;
 export type AuthCredentials = Omit<User, "name">;
 
 export type EditAuth = Partial<AuthCredentials>;
+export type EditNameUser = Partial<NameUser>;
 
 export interface CustomError {
   error?: string;
