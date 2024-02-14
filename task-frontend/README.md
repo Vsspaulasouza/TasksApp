@@ -23,6 +23,7 @@ Interface para gerenciamento de usuários, categorias e tarefas.
  
 -   [React](https://react.dev/) - Framework Javascript para criação de aplicações web
 - [Chakra UI](https://chakra-ui.com/) - Biblioteca de componentes 
+- [TanStack Query](https://tanstack.com/query/latest) - Biblioteca para gerenciar estados e requisições 
  
 ## 🏁 Rodando o projeto <a name = "getting_started"></a>
  
