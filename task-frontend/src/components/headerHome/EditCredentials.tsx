@@ -19,7 +19,7 @@ export function EditCredentials() {
     password: "",
   };
 
-  const { mutate } = useMutation<CreatedUser, AxiosError, EditAuth>({
+  const { mutate: editAuth } = useMutation<CreatedUser, AxiosError, EditAuth>({
     mutationKey: "user",
     mutationFn: async (data) => {
       return await requestApi({
@@ -45,7 +45,7 @@ export function EditCredentials() {
     if (editData.username === "") delete editData.username;
     if (editData.password === "") delete editData.password;
 
-    mutate(editData);
+    editAuth(editData);
   };
 
   return (

@@ -25,7 +25,7 @@ interface TasksListProps {
 
 export function TasksList({ filterTasksState }: TasksListProps) {
   const toast = useToast();
-  const { data } = useQuery<CreatedTask[], AxiosError>({
+  const { data: tasks } = useQuery<CreatedTask[], AxiosError>({
     queryKey: "tasks",
     queryFn: async () => {
       return await requestApi({ urlPath: "tasks" });
@@ -49,8 +49,8 @@ export function TasksList({ filterTasksState }: TasksListProps) {
     orderTasksInitialState
   );
   const filteredTasks = useMemo(
-    () => filterTasks(data ?? [], filterTasksState),
-    [data, filterTasksState]
+    () => filterTasks(tasks ?? [], filterTasksState),
+    [tasks, filterTasksState]
   );
 
   const orderedTasks = useMemo(
@@ -58,7 +58,7 @@ export function TasksList({ filterTasksState }: TasksListProps) {
     [filteredTasks, orderTasksState]
   );
 
-  if (data === undefined || data.length === 0)
+  if (tasks === undefined || tasks.length === 0)
     return <NoData text="No tasks created" />;
 
   return (

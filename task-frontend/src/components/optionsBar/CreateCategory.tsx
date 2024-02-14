@@ -16,7 +16,11 @@ export function CreateCategory() {
   const disclosure = useDisclosure();
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation<CreatedCategory, AxiosError, Category>({
+  const { mutate: createCategory } = useMutation<
+    CreatedCategory,
+    AxiosError,
+    Category
+  >({
     mutationKey: "categories",
     mutationFn: async (data) => {
       return await requestApi({ method: "post", urlPath: "categories", data });
@@ -37,7 +41,7 @@ export function CreateCategory() {
   });
 
   const onSubmit = async (category: Category) => {
-    mutate(category);
+    createCategory(category);
   };
 
   const initialValues: Category = {

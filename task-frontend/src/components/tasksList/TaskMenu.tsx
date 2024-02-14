@@ -30,7 +30,7 @@ export function TaskMenu({ task }: TaskMenuProps) {
   const queryClient = useQueryClient();
 
   const editDisclosure = useDisclosure();
-  const editMutation = useMutation<CreatedTask, AxiosError, EditTask>({
+  const { mutate: editTask } = useMutation<CreatedTask, AxiosError, EditTask>({
     mutationKey: "tasks",
     mutationFn: async (editData) => {
       return await requestApi({
@@ -54,7 +54,7 @@ export function TaskMenu({ task }: TaskMenuProps) {
   });
 
   const handleEdit = async (editData: EditTask) => {
-    editMutation.mutate(editData);
+    editTask(editData);
   };
 
   const categoriesIds = task?.categories.map((category) => category.id);
@@ -66,7 +66,7 @@ export function TaskMenu({ task }: TaskMenuProps) {
   };
 
   const deleteDisclosure = useDisclosure();
-  const deleteMutation = useMutation<CreatedTask, AxiosError>({
+  const { mutate: deleteTask } = useMutation<CreatedTask, AxiosError>({
     mutationKey: "tasks",
     mutationFn: async () => {
       return await requestApi({
@@ -89,10 +89,10 @@ export function TaskMenu({ task }: TaskMenuProps) {
   });
 
   const handleDelete = async () => {
-    deleteMutation.mutate();
+    deleteTask();
   };
 
-  const categoriesQuery = useQuery<CreatedCategory[], AxiosError>({
+  const { data: categories } = useQuery<CreatedCategory[], AxiosError>({
     queryKey: "categories",
     queryFn: async () => {
       return await requestApi({ urlPath: "categories" });
@@ -124,7 +124,7 @@ export function TaskMenu({ task }: TaskMenuProps) {
         initialValues={editInitialValues}
         onSubmit={handleEdit}
         textButton="Edit"
-        categories={categoriesQuery.data ?? []}
+        categories={categories ?? []}
         title="Edit task"
       />
 

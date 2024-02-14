@@ -29,7 +29,11 @@ export function CategoriesMenu({ category }: CategoriesMenuProps) {
   const queryClient = useQueryClient();
 
   const editDisclosure = useDisclosure();
-  const editMutation = useMutation<CreatedCategory, AxiosError, EditCategory>({
+  const { mutate: editCategory } = useMutation<
+    CreatedCategory,
+    AxiosError,
+    EditCategory
+  >({
     mutationKey: "categories",
     mutationFn: async (data) => {
       return await requestApi({
@@ -53,7 +57,7 @@ export function CategoriesMenu({ category }: CategoriesMenuProps) {
   });
 
   const handleEdit = async (editData: EditCategory) => {
-    editMutation.mutate(editData);
+    editCategory(editData);
   };
 
   const editInitialValues: Category = {
@@ -62,7 +66,7 @@ export function CategoriesMenu({ category }: CategoriesMenuProps) {
   };
 
   const deleteDisclosure = useDisclosure();
-  const deleteMutation = useMutation<CreatedCategory, AxiosError>({
+  const { mutate: deleteCategory } = useMutation<CreatedCategory, AxiosError>({
     mutationKey: "categories",
     mutationFn: async () => {
       return await requestApi({
@@ -85,7 +89,7 @@ export function CategoriesMenu({ category }: CategoriesMenuProps) {
   });
 
   const handleDelete = async () => {
-    deleteMutation.mutate();
+    deleteCategory();
   };
 
   return (

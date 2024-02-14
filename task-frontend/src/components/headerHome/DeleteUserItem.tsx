@@ -15,7 +15,7 @@ export function DeleteUserItem() {
 
   const disclosure = useDisclosure();
 
-  const { mutate } = useMutation<CreatedUser, AxiosError>({
+  const { mutate: deleteUser } = useMutation<CreatedUser, AxiosError>({
     mutationKey: "user",
     mutationFn: async () => {
       return await requestApi({
@@ -38,7 +38,7 @@ export function DeleteUserItem() {
   });
 
   const handleClick = async () => {
-    mutate();
+    deleteUser();
   };
 
   return (

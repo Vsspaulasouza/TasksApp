@@ -17,7 +17,7 @@ export function CreateTask() {
   const disclosure = useDisclosure();
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation<CreatedTask, AxiosError, Task>({
+  const { mutate: createTask } = useMutation<CreatedTask, AxiosError, Task>({
     mutationKey: "tasks",
     mutationFn: async (data) => {
       return await requestApi({ method: "post", urlPath: "tasks", data });
@@ -39,7 +39,7 @@ export function CreateTask() {
 
   const onSubmit = async (task: Task) => {
     if (task.categoriesIds?.length === 0) delete task.categoriesIds;
-    mutate(task);
+    createTask(task);
   };
 
   const initialValues: Task = {
@@ -49,7 +49,7 @@ export function CreateTask() {
     categoriesIds: [],
   };
 
-  const categoriesQuery = useQuery<CreatedCategory[], AxiosError>({
+  const { data: categories } = useQuery<CreatedCategory[], AxiosError>({
     queryKey: "categories",
     queryFn: async () => {
       return await requestApi({ urlPath: "categories" });
@@ -77,7 +77,7 @@ export function CreateTask() {
         onSubmit={onSubmit}
         initialValues={initialValues}
         disclosure={disclosure}
-        categories={categoriesQuery.data ?? []}
+        categories={categories ?? []}
         title="Create your task"
       />
     </>

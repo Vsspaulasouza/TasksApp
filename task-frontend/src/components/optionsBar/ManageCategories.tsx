@@ -25,7 +25,7 @@ export function ManageCategories() {
   const btnRef = useRef(null);
   const drawerDisclosure = useDisclosure();
 
-  const { data } = useQuery<CreatedCategory[], AxiosError>({
+  const { data: categories } = useQuery<CreatedCategory[], AxiosError>({
     queryKey: "categories",
     queryFn: async () => {
       return await requestApi({ urlPath: "categories" });
@@ -61,10 +61,10 @@ export function ManageCategories() {
 
           <DrawerBody>
             <CreateCategory />
-            {data === undefined || data.length === 0 ? (
+            {categories === undefined || categories.length === 0 ? (
               <NoData text="No categories created" />
             ) : (
-              <CategoriesRender categories={data} />
+              <CategoriesRender categories={categories} />
             )}
           </DrawerBody>
         </DrawerContent>

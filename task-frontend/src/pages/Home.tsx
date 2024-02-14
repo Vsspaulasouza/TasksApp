@@ -31,7 +31,7 @@ export function Home() {
     filterTasksInitialState
   );
 
-  const { data } = useQuery<CreatedUser, AxiosError>({
+  const { data: user } = useQuery<CreatedUser, AxiosError>({
     queryKey: "user",
     queryFn: async () => {
       return await requestApi({ urlPath: "users/me" });
@@ -51,7 +51,7 @@ export function Home() {
       py={{ base: "6", md: "20" }}
       px={{ base: "3", sm: "10", md: "15", lg: "20" }}
     >
-      <HeaderHome user={data ?? null} />
+      <HeaderHome user={user ?? null} />
       <OptionsBar filterTasksDispatch={filterTasksDispatch} />
       <TasksList filterTasksState={filterTasksState} />
     </Container>

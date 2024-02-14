@@ -23,7 +23,11 @@ export function EditUserInfo() {
     name: "",
   };
 
-  const { mutate } = useMutation<CreatedUser, AxiosError, EditNameUser>({
+  const { mutate: editUser } = useMutation<
+    CreatedUser,
+    AxiosError,
+    EditNameUser
+  >({
     mutationKey: "user",
     mutationFn: async (data) => {
       return await requestApi({
@@ -46,7 +50,7 @@ export function EditUserInfo() {
   });
 
   const onSubmitEditName = async (editData: NameUser) => {
-    mutate(editData);
+    editUser(editData);
   };
 
   return (
